@@ -10,7 +10,7 @@ counter selectionSwaps("selection sort exchanges");
 
 
 int main() {
-	initSamples();
+	vector < pair<int*, int> > * samples = initSamples();
 
     /*performSort(bubble_sort);
     bubbleComps.printAll();
@@ -20,10 +20,10 @@ int main() {
     adapBubbleComps.printAll();
 	adapBubbleSwaps.printAll();*/
 
-	performSort(insertion_sort);
+	performSort(insertion_sort, samples);
 	insertionComps.printAll();
 
-	deallocSamples(SAMPLES);
+	deallocSamples(samples);
 }
 
 void createRandArray(int *a, int size) {
@@ -46,8 +46,8 @@ void createTwentyPercentArray(int *a, int size) {
 	}
 }
 
-void initSamples() {
-	SAMPLES = new vector< pair<int*, int> >();
+vector< pair<int*, int> > * initSamples() {
+	vector< pair<int*, int> > * samples = new vector< pair<int*, int> >();
 	srand(time(NULL));
 	for (int i = 0; i < 4; i++) {
 		int size; 
@@ -89,22 +89,23 @@ void initSamples() {
 					cout << "WAT\n";
 					break;	
 			}
-			SAMPLES->push_back(make_pair(cur, size));
+			samples->push_back(make_pair(cur, size));
 		}
 	}
+	return samples;
 }
 
-vector< pair<int*, int> > * copySamples() {
-	vector< pair<int*, int> > *newV = new vector< pair<int*, int> >();
-	for (vector<pair<int*,int> >::iterator it = SAMPLES->begin() ; it != SAMPLES->end(); ++it) {
+vector< pair<int*, int> > * copySamples(vector< pair<int*, int> > * src) {
+	vector< pair<int*, int> > *dest = new vector< pair<int*, int> >();
+	for (vector<pair<int*,int> >::iterator it = src->begin() ; it != src->end(); ++it) {
 		pair<int *, int> p = *it;
 		int * ary = p.first;
 		int size = p.second;
 		int * newAry = (int *)malloc(sizeof(int) * size);
 		memcpy(newAry, ary, sizeof(int) * size);
-		newV->push_back(make_pair(newAry, size));
+		dest->push_back(make_pair(newAry, size));
 	}
-	return newV;
+	return dest;
 }
 
 void deallocSamples(vector< pair<int*, int> > *victim) {
@@ -116,8 +117,8 @@ void deallocSamples(vector< pair<int*, int> > *victim) {
 	delete victim;
 }
 
-void performSort(void f(pair<int*, int>)) {
-	vector< pair<int*, int> > *victim = copySamples(); 
+void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
+	vector< pair<int*, int> > *victim = copySamples(samples); 
 	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
 		pair<int *, int> p = *it;
 		cout<<"sorting size: "<<p.second<<"\n";

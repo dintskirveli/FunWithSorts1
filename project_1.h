@@ -31,13 +31,11 @@ int 	adap_sequencial_search2		(pair<int*, int>, int);		// function perform apapt
 void 	printArray 					(int ary [], int size);		// function print an array.
 void	printArray					(pair<int*, int>);		// function print an array.
 
-void initSamples();
+vector< pair<int*, int> > * initSamples();
 
-vector< pair<int*, int> > * copySamples();
+vector< pair<int*, int> > * copySamples(vector< pair<int*, int> > * src);
 void deallocSamples(vector< pair<int*, int> > * victim);
-void performSort(void f(pair<int*, int>));
-
-vector< pair<int*, int> > * SAMPLES;
+void performSort(void f(pair<int*, int>), vector< pair<int*, int> > * samples);
 
 void printArray(pair<int*, int> p) {
 	printArray(p.first, p.second);
