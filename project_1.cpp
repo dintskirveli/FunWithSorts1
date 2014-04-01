@@ -157,18 +157,14 @@ void adap_bubble_sort(pair<int *, int> p) {
 void adap_bubble_sort(int ary [], int size) {
 	adapBubbleComps.next();
 	adapBubbleSwaps.next();
-	
-	int i, j, temp;
 	bool flag = true;
-	for (i = 1; (i <= size) && flag; i++) {
+	for (int i = 1; (i <= size) && flag; i++) {
 		flag = false;
-		for (j = 0; j < size - 1; j++) {
+		for (int j = 0; j < size - 1; j++) {
 			adapBubbleComps.increment();
 			if (ary[j] > ary[j+1]) {
 				adapBubbleSwaps.increment();
-				temp = ary[j];
-				ary[j] = ary[j+1];
-				ary[j+1] = temp;
+				swap(ary[j], ary[j+1]);
 				flag = true;						
 			}
 		}
@@ -181,7 +177,6 @@ void insertion_sort(pair<int *, int> p) {
 
 void insertion_sort(int ary [], int size) {
 	insertionComps.next();
-	
 	int i, j, key;
 	for (i = 1; i < size; i++) {
 		key = ary[i];
@@ -203,7 +198,7 @@ void selection_sort(int ary [], int size) {
 	selectionComps.next();
 	selectionSwaps.next();
 
-	int i, j, min, temp;
+	int i, j, min;
 	for (i = 0; i < size - 1; i++) {				// loop goes from 0 - (n-1)
 		min = i; 									// index of the minimum 
 		for (j = i + 1; j < size; j++) {
@@ -264,9 +259,7 @@ int adap_sequencial_search2(int ary [], int size, int key) {
 	int temp;
 	for (int i = 0; i < size; i++) {
 		if (ary[i] == key) {
-			temp = ary[i-1];
-			ary[i-1] = ary[i];
-			ary[i] = temp;
+			swap(ary[i], ary[i-1]);
 			return i;
 		}
 	}
