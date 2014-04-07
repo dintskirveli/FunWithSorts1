@@ -58,6 +58,8 @@ void printArray(int ary[], int size) {
 	cout << "\n";
 }
 
+void createTwentyPercentArray(int *a, int size);
+
 class counter
 {
 public :

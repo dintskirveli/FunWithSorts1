@@ -105,9 +105,20 @@ void createReverseArray(int *a, int size) {
 
 void createTwentyPercentArray(int *a, int size) {
 	int sorted = size/5;
+
 	for (int i = 0; i < size; i++) {
-		if (i <= sorted) a[i] = i;
-		else a[i] = rand() % 1000000; 
+		a[i] = rand() % 1000000; 
+	}
+
+	vector<int> used;
+	for (int i = 0; i < sorted; i ++) {
+		used.push_back(rand() % size);
+	}
+
+	sort(used.begin(), used.end());
+	int count = 0;
+	for (vector<int>::iterator it=used.begin(); it!=used.end(); ++it) {
+		a[((int)*it)] = count++;
 	}
 }
 
