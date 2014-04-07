@@ -7,23 +7,88 @@ counter adapBubbleSwaps("adap. bubble sort exchanges");
 counter insertionComps("insertion sort comparisons");
 counter selectionComps("selection sort comparisons");
 counter selectionSwaps("selection sort exchanges");
+counter sequencialComps("sequencial search comparisons");
+counter orderedSequencialComps("ordered sequencial search comparisons");
+counter adapSequence1Comps("adap_sequencial_search1 comparisons");
+counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 
 
 int main() {
-	vector < pair<int*, int> > * samples = initSamples();
 
-    /*performSort(bubble_sort);
-    bubbleComps.printAll();
-	bubbleSwaps.printAll();*/
+	for (int i = 0; i<3; i++) {
+		vector < pair<int*, int> > * samples = initSamples();
 
-	/*performSort(adap_bubble_sort);
-    adapBubbleComps.printAll();
-	adapBubbleSwaps.printAll();*/
+	    performSearch(adap_sequencial_search1, samples);
 
-	performSort(insertion_sort, samples);
-	insertionComps.printAll();
+	    performSearch(adap_sequencial_search2, samples);
 
-	deallocSamples(samples);
+	    performSort(selection_sort, samples);
+
+		deallocSamples(samples);
+	}	
+
+    char filename[] = "OMG.csv";
+    printCountersToCSV(filename);
+}
+
+vector<counter> * getCounterVector() {
+	vector<counter> * counters = new vector<counter>();
+	counters->push_back(bubbleComps);
+	counters->push_back(bubbleSwaps);
+	counters->push_back(adapBubbleComps);
+	counters->push_back(adapBubbleSwaps);
+	counters->push_back(insertionComps);
+	counters->push_back(selectionComps);
+	counters->push_back(selectionSwaps);
+	counters->push_back(sequencialComps);
+	counters->push_back(orderedSequencialComps);
+	counters->push_back(adapSequence1Comps);
+	counters->push_back(adapSequence2Comps);
+	return counters;
+}
+
+
+void printCountersToCSV(char * filename) {
+	vector<counter> * counters = getCounterVector();
+	ofstream myfile;
+  	myfile.open (filename, fstream::app);
+  	myfile << ",";
+  	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
+		int size = SAMPLE_SIZES[i];	
+		for (int j = 0; j < 3; j++) {
+			switch(j) {
+				case 0:
+					myfile<<size<<"rand,";
+					break;
+				case 1:
+					myfile<<size<<"reverse,";
+					break;
+				case 2:
+					myfile<<size<<"twentypercent,";
+					break;
+				default:
+					cout << "WAT\n";
+					break;	
+			}
+		}
+	}
+	myfile << "\n";
+
+	for (vector< counter >::iterator it = counters->begin() ; it != counters->end(); ++it) {
+		counter cur = *it;
+		
+
+		for (int i = 0; i < cur.numTrials();i++ ) {
+			myfile << cur.desc()<<" run "<<i+1<< ",";
+			for (int j = 0; j < 12; j ++) {
+				myfile <<cur.at(j+12*i) <<",";
+			}
+			myfile<<"\n";
+		}
+		myfile<<"\n";
+	}
+
+  	myfile.close();
 }
 
 void createRandArray(int *a, int size) {
@@ -49,30 +114,8 @@ void createTwentyPercentArray(int *a, int size) {
 vector< pair<int*, int> > * initSamples() {
 	vector< pair<int*, int> > * samples = new vector< pair<int*, int> >();
 	srand(time(NULL));
-	for (int i = 0; i < 4; i++) {
-		int size; 
-		switch (i) {
-			case 0:
-				size = 500;
-				//size = 5;
-				break;
-			case 1:
-				size = 2500;
-				//size = 10;
-				break;
-			case 2:
-				size = 12500;
-				//size = 15;
-				break;
-			case 3:
-				size = 62500;
-				//size = 20;
-				break;
-			default:
-				cout << "WAT\n";
-				break;
-		}
-		
+	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
+		int size = SAMPLE_SIZES[i];	
 		for (int j = 0; j < 3; j++) {
 			int * cur = (int *)malloc(sizeof(int) * size);
 			switch(j) {
@@ -127,6 +170,17 @@ void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
 	deallocSamples(victim);
 }
 
+void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *samples) {
+	vector< pair<int*, int> > *victim = copySamples(samples); 
+	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
+		pair<int *, int> p = *it;
+		int keyIndex = rand() % p.second;
+		cout<<"searching size: "<< p.second<<", index: "<<keyIndex<<"\n";
+		f(*it, p.first[keyIndex]);
+	}
+	deallocSamples(victim);
+}
+
 void bubble_sort(pair<int *, int> p) {
 	bubble_sort(p.first, p.second);
 }
@@ -157,14 +211,18 @@ void adap_bubble_sort(pair<int *, int> p) {
 void adap_bubble_sort(int ary [], int size) {
 	adapBubbleComps.next();
 	adapBubbleSwaps.next();
+	
+	int i, j, temp;
 	bool flag = true;
-	for (int i = 1; (i <= size) && flag; i++) {
+	for (i = 1; (i <= size) && flag; i++) {
 		flag = false;
-		for (int j = 0; j < size - 1; j++) {
+		for (j = 0; j < size - 1; j++) {
 			adapBubbleComps.increment();
 			if (ary[j] > ary[j+1]) {
 				adapBubbleSwaps.increment();
-				swap(ary[j], ary[j+1]);
+				temp = ary[j];
+				ary[j] = ary[j+1];
+				ary[j+1] = temp;
 				flag = true;						
 			}
 		}
@@ -177,6 +235,7 @@ void insertion_sort(pair<int *, int> p) {
 
 void insertion_sort(int ary [], int size) {
 	insertionComps.next();
+	
 	int i, j, key;
 	for (i = 1; i < size; i++) {
 		key = ary[i];
@@ -197,7 +256,6 @@ void selection_sort(pair<int *, int> p) {
 void selection_sort(int ary [], int size) {
 	selectionComps.next();
 	selectionSwaps.next();
-
 	int i, j, min;
 	for (i = 0; i < size - 1; i++) {				// loop goes from 0 - (n-1)
 		min = i; 									// index of the minimum 
@@ -217,7 +275,9 @@ int sequencial_search(pair<int*, int>p, int key) {
 }
 
 int sequencial_search(int ary [], int size, int key) {
+	sequencialComps.next();
 	for (int i = 0; i < size; i++) {
+		sequencialComps.increment();
 		if (ary[i] == key) return i;
 	}
 	return -1;
@@ -228,8 +288,11 @@ int ordered_sequencial_search(pair<int*, int>p, int key) {
 }
 
 int ordered_sequencial_search(int ary [], int size, int key) {
+	orderedSequencialComps.next();
 	for (int i = 0; i < size; i++) {
-		if (ary[i] <= key) return i;
+		orderedSequencialComps.increment();
+		if (ary[i] == key) return i;
+		else if (ary[i] > key) return -1;
 	}
 	return -1;
 }
@@ -239,12 +302,11 @@ int adap_sequencial_search1(pair<int*, int>p, int key) {
 }
 
 int adap_sequencial_search1(int ary [], int size, int key) {
-	int temp;
+	adapSequence1Comps.next();
 	for (int i = 0; i < size; i++) {
+		adapSequence1Comps.increment();
 		if (ary[i] == key) {
-			temp = ary[1];
-			ary[1] = key;
-			ary[i] = temp;
+			swap (ary[i], ary[0]);
 			return i;
 		}
 	}
@@ -256,10 +318,11 @@ int adap_sequencial_search2(pair<int*, int>p, int key) {
 }
 
 int adap_sequencial_search2(int ary [], int size, int key) {
-	int temp;
+	adapSequence2Comps.next();
 	for (int i = 0; i < size; i++) {
+		adapSequence2Comps.increment();
 		if (ary[i] == key) {
-			swap(ary[i], ary[i-1]);
+			swap(ary[i-1], ary[i]);
 			return i;
 		}
 	}
