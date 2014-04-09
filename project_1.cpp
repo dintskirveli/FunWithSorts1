@@ -1,29 +1,21 @@
 #include "project_1.h"
 
-counter bubbleComps("bubble comparisons");
-counter bubbleSwaps("bubble exchanges");
-counter adapBubbleComps("adap. bubble sort comparisons");
-counter adapBubbleSwaps("adap. bubble sort exchanges");
-counter insertionComps("insertion sort comparisons");
-counter selectionComps("selection sort comparisons");
-counter selectionSwaps("selection sort exchanges");
-counter sequencialComps("sequencial search comparisons");
-counter orderedSequencialComps("ordered sequencial search comparisons");
-counter adapSequence1Comps("adap_sequencial_search1 comparisons");
-counter adapSequence2Comps("adap_sequencial_search2 comparisons");
-
-
 int main() {
 
-	for (int i = 0; i<3; i++) {
+	for (int i = 0; i<5; i++) {
 		vector < pair<int*, int> > * samples = initSamples();
 
-	    performSearch(adap_sequencial_search1, samples);
+		//printSamples(samples);
+	    //performSearch(adap_sequencial_search1, samples);
 
-	    performSearch(adap_sequencial_search2, samples);
+	    //performSearch(adap_sequencial_search2, samples);
+
+	    //performSearch(sequencial_search, samples);
+
+	    //performSearch(ordered_sequencial_search, samples);
 
 	    performSort(selection_sort, samples);
-
+		performSort(insertion_sort, samples);
 		deallocSamples(samples);
 	}	
 
@@ -31,28 +23,27 @@ int main() {
     printCountersToCSV(filename);
 }
 
-vector<counter> * getCounterVector() {
-	vector<counter> * counters = new vector<counter>();
-	counters->push_back(bubbleComps);
-	counters->push_back(bubbleSwaps);
-	counters->push_back(adapBubbleComps);
-	counters->push_back(adapBubbleSwaps);
-	counters->push_back(insertionComps);
-	counters->push_back(selectionComps);
-	counters->push_back(selectionSwaps);
-	counters->push_back(sequencialComps);
-	counters->push_back(orderedSequencialComps);
-	counters->push_back(adapSequence1Comps);
-	counters->push_back(adapSequence2Comps);
-	return counters;
-}
+void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *samples) {
+	
+	vector< pair<int*, int> > *victim = copySamples(samples); 
 
+	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
+		pair<int *, int> p = *it;
+		cout<<"searching size: "<< p.second<<"\n";
+		//for (int i = 0; i < p.second*5; i++) {
+		int keyIndex = rand() % p.second;
+		f(p, p.first[keyIndex]);
+		//}
+	}	
+	
+	deallocSamples(victim);
+}
 
 void printCountersToCSV(char * filename) {
 	vector<counter> * counters = getCounterVector();
 	ofstream myfile;
   	myfile.open (filename, fstream::app);
-  	myfile << ",";
+  	/*myfile << ",";
   	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
 		int size = SAMPLE_SIZES[i];	
 		for (int j = 0; j < 3; j++) {
@@ -73,13 +64,12 @@ void printCountersToCSV(char * filename) {
 		}
 	}
 	myfile << "\n";
-
+	*/
 	for (vector< counter >::iterator it = counters->begin() ; it != counters->end(); ++it) {
 		counter cur = *it;
 		
-
 		for (int i = 0; i < cur.numTrials();i++ ) {
-			myfile << cur.desc()<<" run "<<i+1<< ",";
+			myfile << cur.desc()<<",";
 			for (int j = 0; j < 12; j ++) {
 				myfile <<cur.at(j+12*i) <<",";
 			}
@@ -124,7 +114,7 @@ void createTwentyPercentArray(int *a, int size) {
 
 vector< pair<int*, int> > * initSamples() {
 	vector< pair<int*, int> > * samples = new vector< pair<int*, int> >();
-	srand(time(NULL));
+	srand(clock());
 	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
 		int size = SAMPLE_SIZES[i];	
 		for (int j = 0; j < 3; j++) {
@@ -177,17 +167,6 @@ void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
 		pair<int *, int> p = *it;
 		cout<<"sorting size: "<<p.second<<"\n";
 		f(*it);
-	}
-	deallocSamples(victim);
-}
-
-void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *samples) {
-	vector< pair<int*, int> > *victim = copySamples(samples); 
-	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
-		pair<int *, int> p = *it;
-		int keyIndex = rand() % p.second;
-		cout<<"searching size: "<< p.second<<", index: "<<keyIndex<<"\n";
-		f(*it, p.first[keyIndex]);
 	}
 	deallocSamples(victim);
 }
