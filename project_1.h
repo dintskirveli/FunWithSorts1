@@ -9,7 +9,7 @@
 #include <time.h>
 #include <vector>
 #include <utility>
-#include <algorithm> 
+#include <algorithm>
 
 using namespace std;
 
@@ -89,23 +89,23 @@ vector<counter> * getCounterVector() {
 }
 
 void 	bubble_sort					(int ary [], int size);		// function performs Bubble Sort.
-void 	bubble_sort					(pair<int*, int>);		// function performs Bubble Sort.
+void 	bubble_sort					(pair<int*, int>);			// function performs Bubble Sort.
 void	adap_bubble_sort			(int ary [], int size);		// function performs Adaptive Bubble Sort.
-void	adap_bubble_sort			(pair<int*, int>);		// function performs Adaptive Bubble Sort.
+void	adap_bubble_sort			(pair<int*, int>);			// function performs Adaptive Bubble Sort.
 void  	insertion_sort				(int ary [], int size);		// function performs Insertion Sort.
-void  	insertion_sort				(pair<int*, int>);		// function performs Insertion Sort.
+void  	insertion_sort				(pair<int*, int>);			// function performs Insertion Sort.
 void 	selection_sort				(int ary [], int size);		// function performs Selection Sort.
-void  	selection_sort				(pair<int*, int>);		// function performs Insertion Sort.
+void  	selection_sort				(pair<int*, int>);			// function performs Selection Sort.
 int		sequencial_search			(int ary [], int, int);		// function perform Sequencial Search.
 int		sequencial_search			(pair<int*, int>, int);		// function perform Sequencial Search.
 int		ordered_sequencial_search	(int ary [], int, int);		// function perform ordered Sequencial Search.
 int		ordered_sequencial_search	(pair<int*, int>, int);		// function perform ordered Sequencial Search.
-int 	adap_sequencial_search1		(int *ary, int size, int);		// function perform apaptive sequencial search 1.
-int 	adap_sequencial_search1		(pair<int*, int> p, int);		// function perform apaptive sequencial search 1.
+int 	adap_sequencial_search1		(int *ary, int size, int);	// function perform apaptive sequencial search 1.
+int 	adap_sequencial_search1		(pair<int*, int> p, int);	// function perform apaptive sequencial search 1.
 int 	adap_sequencial_search2		(int ary [], int, int);		// function perform apaptive sequencial search 2.
 int 	adap_sequencial_search2		(pair<int*, int>, int);		// function perform apaptive sequencial search 2.
 void 	printArray 					(int ary [], int size);		// function print an array.
-void	printArray					(pair<int*, int>);		// function print an array.
+void	printArray					(pair<int*, int>);			// function print an array.
 
 const int SAMPLE_SIZES[] = { 500, 2500, 12500, 62500 };
 const int NUM_SAMPLE_SIZES = (sizeof SAMPLE_SIZES / sizeof SAMPLE_SIZES[0]);

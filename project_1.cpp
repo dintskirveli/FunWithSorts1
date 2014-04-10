@@ -2,7 +2,7 @@
 
 int main() {
 
-	for (int i = 0; i<5; i++) {
+	for (int i = 0; i<1; i++) {
 		vector < pair<int*, int> > * samples = initSamples();
 
 		//printSamples(samples);
@@ -13,9 +13,9 @@ int main() {
 	    //performSearch(sequencial_search, samples);
 
 	    //performSearch(ordered_sequencial_search, samples);
-
+		//performSort(insertion_sort, samples);
+		
 	    performSort(selection_sort, samples);
-		performSort(insertion_sort, samples);
 		deallocSamples(samples);
 	}	
 
@@ -36,6 +36,16 @@ void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *sampl
 		//}
 	}	
 	
+	deallocSamples(victim);
+}
+
+void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
+	vector< pair<int*, int> > *victim = copySamples(samples); 
+	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
+		pair<int *, int> p = *it;
+		cout<<"sorting size: "<<p.second<<"\n";
+		f(*it);
+	}
 	deallocSamples(victim);
 }
 
@@ -161,16 +171,6 @@ void deallocSamples(vector< pair<int*, int> > *victim) {
 	delete victim;
 }
 
-void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
-	vector< pair<int*, int> > *victim = copySamples(samples); 
-	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
-		pair<int *, int> p = *it;
-		cout<<"sorting size: "<<p.second<<"\n";
-		f(*it);
-	}
-	deallocSamples(victim);
-}
-
 void bubble_sort(pair<int *, int> p) {
 	bubble_sort(p.first, p.second);
 }
@@ -255,8 +255,10 @@ void selection_sort(int ary [], int size) {
 				min = j;
 			}
 		}
-		selectionSwaps.increment();
-		swap(ary[min],ary[i]);
+		if (min != i) {
+			selectionSwaps.increment();
+			swap(ary[min],ary[i]);
+		}
 	}
 }
 
