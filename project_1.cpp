@@ -2,7 +2,23 @@
 
 int main() {
 
-	for (int i = 0; i<1; i++) {
+	/*
+	int nums [20];
+
+	for (int i = 0; i < 20; i++) {
+		nums[20 - i - 1] = i;
+	}
+
+	adap20_merge_sort(nums, 20, 0, 19);
+	
+	for (int i = 0; i < 20; i++)
+		cout << nums[i] << " ";
+	
+	return 0;
+
+	*/
+	///*
+	for (int i = 0; i<10; i++) {
 		vector < pair<int*, int> > * samples = initSamples();
 
 		//printSamples(samples);
@@ -15,12 +31,20 @@ int main() {
 	    //performSearch(ordered_sequencial_search, samples);
 		//performSort(insertion_sort, samples);
 		
-	    performSort(selection_sort, samples);
+		performSort(merge_sort, samples);
+		performSort(adap_merge_sort, samples);
+	    performSort(adap20_merge_sort, samples);
+	    
+	    //performSort(selection_sort, samples);
+	    //performSort(bubble_sort, samples);
+	    
 		deallocSamples(samples);
 	}	
-
+	
     char filename[] = "OMG.csv";
     printCountersToCSV(filename);
+    //*/
+    
 }
 
 void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *samples) {
@@ -320,3 +344,173 @@ int adap_sequencial_search2(int ary [], int size, int key) {
 	}
 	return -1;
 }
+
+// Programming Project 2
+
+void merge_sort(pair<int*, int> p) {
+	merge_sort_Comps.next();
+	merge_sort(p.first, p.second, 0, p.second - 1);
+}
+
+void merge_sort(int ary [], int size, int low, int high) {
+	if (low < high) {
+		int middle = (low + high)/2;			// divide: get the middle element
+		merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
+		merge_sort(ary, size, middle + 1, high);// merge_sort the right part of the array
+		merge(ary, size, low, middle, high);	// combine the sub arrays
+	}
+}
+
+void merge (int ary [], int size, int low, int middle, int high) {
+	
+	int temp[size];
+	for (int i = low; i <= high; i++) {
+		temp[i] = ary[i];
+	}
+
+	int i = low;
+	int j = middle + 1;
+	int k = low;
+
+	while ( i <= middle && j <= high) {
+		if (temp[i] <= temp[j]) {
+			ary[k] = temp[i];
+			i++;
+		} else {
+			ary[k] = temp[j];
+			j++;
+		}
+		k++;
+		merge_sort_Comps.increment();
+	}
+
+	while (i <= middle) {
+		ary[k] = temp[i];
+		k++;
+		i++;
+	}
+}
+
+void adap_merge_sort(pair<int*, int> p) {
+	adap_merge_sort_Comps.next();
+	adap_merge_sort(p.first, p.second, 0, p.second - 1);
+}
+
+void adap_merge_sort(int ary [], int size, int low, int high) {
+	if (high <= low + 100 - 1) {
+		merge_to_insertion(ary, high - low + 1);
+		return;
+	} else if (low < high) {
+		int middle = (low + high)/2;			// divide: get the middle element
+		adap_merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
+		adap_merge_sort(ary, size, middle + 1, high);// merge_sort the right part of the array
+		adap_merge(ary, size, low, middle, high);	// combine the sub arrays
+	}
+}
+
+void adap_merge (int ary [], int size, int low, int middle, int high) {
+	
+	int temp[size];
+	for (int i = low; i <= high; i++) {
+		temp[i] = ary[i];
+	}
+
+	int i = low;
+	int j = middle + 1;
+	int k = low;
+
+	while ( i <= middle && j <= high) {
+		if (temp[i] <= temp[j]) {
+			ary[k] = temp[i];
+			i++;
+		} else {
+			ary[k] = temp[j];
+			j++;
+		}
+		k++;
+		adap_merge_sort_Comps.increment();
+	}
+
+	while (i <= middle) {
+		ary[k] = temp[i];
+		k++;
+		i++;
+	}
+}
+
+void merge_to_insertion(int ary [], int size) {
+	int i, j, key;
+	for (i = 1; i < size; i++) {
+		key = ary[i];
+		j = i - 1;
+		while (j >= 0 && ary[j] > key) {
+			adap_merge_sort_Comps.increment();
+			ary[j + 1] = ary[j];
+			j = j - 1;
+		}
+		ary[j + 1] = key;
+	}
+}
+
+void adap20_merge_sort(pair<int*, int> p) {
+	adap20_merge_sort_Comps.next();
+	adap20_merge_sort(p.first, p.second, 0, p.second - 1);
+}
+
+void adap20_merge_sort(int ary [], int size, int low, int high) {
+	if (high <= low + 20 - 1) {
+		merge_to_insertion(ary, high - low + 1);
+		return;
+	} else if (low < high) {
+		int middle = (low + high)/2;					// divide: get the middle element
+		adap20_merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
+		adap20_merge_sort(ary, size, middle + 1, high);	// merge_sort the right part of the array
+		adap20_merge(ary, size, low, middle, high);		// combine the sub arrays
+	}
+}
+
+void adap20_merge (int ary [], int size, int low, int middle, int high) {
+	
+	int temp[size];
+	for (int i = low; i <= high; i++) {
+		temp[i] = ary[i];
+	}
+
+	int i = low;
+	int j = middle + 1;
+	int k = low;
+
+	while ( i <= middle && j <= high) {
+		if (temp[i] <= temp[j]) {
+			ary[k] = temp[i];
+			i++;
+		} else {
+			ary[k] = temp[j];
+			j++;
+		}
+		k++;
+		adap20_merge_sort_Comps.increment();
+	}
+
+	while (i <= middle) {
+		ary[k] = temp[i];
+		k++;
+		i++;
+	}
+}
+
+void merge20_to_insertion(int ary [], int size) {
+	int i, j, key;
+	for (i = 1; i < size; i++) {
+		key = ary[i];
+		j = i - 1;
+		while (j >= 0 && ary[j] > key) {
+			adap20_merge_sort_Comps.increment();
+			ary[j + 1] = ary[j];
+			j = j - 1;
+		}
+		ary[j + 1] = key;
+	}
+}
+
+

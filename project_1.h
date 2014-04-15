@@ -72,6 +72,11 @@ counter orderedSequencialComps("ordered sequencial search comparisons");
 counter adapSequence1Comps("adap_sequencial_search1 comparisons");
 counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 
+counter merge_sort_Comps("merge_sort comparisons");
+counter adap_merge_sort_Comps("adap_merge_sort comparisons");
+counter adap20_merge_sort_Comps("adap20_merge_sort comparisons");
+counter heap_sort("heap_sort");
+
 vector<counter> * getCounterVector() {
 	vector<counter> * counters = new vector<counter>();
 	counters->push_back(bubbleComps);
@@ -85,9 +90,15 @@ vector<counter> * getCounterVector() {
 	counters->push_back(orderedSequencialComps);
 	counters->push_back(adapSequence1Comps);
 	counters->push_back(adapSequence2Comps);
+
+	counters->push_back(merge_sort_Comps);
+	counters->push_back(adap_merge_sort_Comps);
+	counters->push_back(adap20_merge_sort_Comps);
+
 	return counters;
 }
 
+// Programming Project 1
 void 	bubble_sort					(int ary [], int size);		// function performs Bubble Sort.
 void 	bubble_sort					(pair<int*, int>);			// function performs Bubble Sort.
 void	adap_bubble_sort			(int ary [], int size);		// function performs Adaptive Bubble Sort.
@@ -106,6 +117,19 @@ int 	adap_sequencial_search2		(int ary [], int, int);		// function perform apapt
 int 	adap_sequencial_search2		(pair<int*, int>, int);		// function perform apaptive sequencial search 2.
 void 	printArray 					(int ary [], int size);		// function print an array.
 void	printArray					(pair<int*, int>);			// function print an array.
+
+// Programming Project 2
+void	merge_sort					(int ary[], int size, int low, int high);
+void 	merge_sort					(pair<int*, int>);			// function performs merge_sort
+void 	merge 						(int ary[], int size, int low, int middle, int high);
+void	adap_merge_sort				(int ary[], int size, int low, int high);
+void 	adap_merge_sort				(pair<int*, int>);			// function performs merge_sort
+void 	adap_merge 					(int ary[], int size, int low, int middle, int high);
+void  	merge_to_insertion			(int ary [], int size);		// function performs Insertion Sort.
+void	adap20_merge_sort			(int ary[], int size, int low, int high);
+void 	adap20_merge_sort			(pair<int*, int>);			// function performs merge_sort
+void 	adap20_merge 				(int ary[], int size, int low, int middle, int high);
+void  	merge20_to_insertion			(int ary [], int size);		// function performs Insertion Sort.
 
 const int SAMPLE_SIZES[] = { 500, 2500, 12500, 62500 };
 const int NUM_SAMPLE_SIZES = (sizeof SAMPLE_SIZES / sizeof SAMPLE_SIZES[0]);

@@ -56,12 +56,14 @@ for key in seriesDict:
 	fig = plt.figure()
 	dpi = fig.dpi 
 	fig.set_size_inches(width / dpi, height / dpi) 
-
 	plt.ylabel("Counter")
 	plt.xlabel("run #")
+	
 	for i in range(12):
 		l = i2str(i)
+		print seriesy[i], " ", l
 		plt.plot(seriesy[i], label=l)
+	
 	plt.title(key)
 	plt.legend(loc="upper left")
 	plt.savefig(key)
