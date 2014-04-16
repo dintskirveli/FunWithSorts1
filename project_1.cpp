@@ -3,40 +3,48 @@
 int main() {
 
 	/*
+	
 	int nums [20];
 
-	for (int i = 0; i < 20; i++) {
-		nums[20 - i - 1] = i;
-	}
-
-	adap20_merge_sort(nums, 20, 0, 19);
-	
 	for (int i = 0; i < 20; i++)
-		cout << nums[i] << " ";
+		nums[i] = rand() % 1000;
+
+	cout << "Original Array \n";
+	printArray(nums, 20);
+
+	heap_sort(nums, 20);
 	
+	cout << "\nAfter heap_sort \n\n";
+	printArray(nums, 20);
+
+	cout << "\n";
 	return 0;
 
 	*/
+
 	///*
 	for (int i = 0; i<10; i++) {
 		vector < pair<int*, int> > * samples = initSamples();
 
-		//printSamples(samples);
-	    //performSearch(adap_sequencial_search1, samples);
+		// printSamples(samples);
+	    // performSearch(adap_sequencial_search1, samples);
 
-	    //performSearch(adap_sequencial_search2, samples);
+	    // performSearch(adap_sequencial_search2, samples);
 
-	    //performSearch(sequencial_search, samples);
+	    // performSearch(sequencial_search, samples);
 
-	    //performSearch(ordered_sequencial_search, samples);
-		//performSort(insertion_sort, samples);
+	    // performSearch(ordered_sequencial_search, samples);
+		// performSort(insertion_sort, samples);
 		
+		performSort(heap_sort, samples);
+
 		performSort(merge_sort, samples);
-		performSort(adap_merge_sort, samples);
-	    performSort(adap20_merge_sort, samples);
-	    
-	    //performSort(selection_sort, samples);
-	    //performSort(bubble_sort, samples);
+		
+		// performSort(adap_merge_sort, samples);
+	    // performSort(adap20_merge_sort, samples);
+	   	
+	    // performSort(selection_sort, samples);
+	    //  performSort(bubble_sort, samples);
 	    
 		deallocSamples(samples);
 	}	
@@ -54,10 +62,8 @@ void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *sampl
 	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
 		pair<int *, int> p = *it;
 		cout<<"searching size: "<< p.second<<"\n";
-		//for (int i = 0; i < p.second*5; i++) {
 		int keyIndex = rand() % p.second;
 		f(p, p.first[keyIndex]);
-		//}
 	}	
 	
 	deallocSamples(victim);
@@ -512,5 +518,55 @@ void merge20_to_insertion(int ary [], int size) {
 		ary[j + 1] = key;
 	}
 }
+
+// Heapsort
+
+void heap_sort(pair<int*, int> p) {
+	heap_sort_Comps.next();
+	heap_sort_Swaps.next();
+	heap_sort(p.first, p.second);
+}
+
+void heap_sort(int ary [], int size) {
+	build_maxHeap(ary, size);
+	for (int i = size - 1; i >= 1; i--) {
+		heap_sort_Swaps.increment();
+		swap(ary[0], ary[i]);
+		size -= 1;
+		max_heapify(ary, 0, size);
+	}
+}
+
+void build_maxHeap(int ary [], int size) {
+	for(int i = size/2; i >= 0; i--)
+        max_heapify(ary, i, size);
+}
+
+void max_heapify(int ary [], int i, int size) {
+	int leftChild_index = 2 * i + 1;
+	int rightChild_index = 2 * i + 2;
+
+	int largest_index;
+
+	heap_sort_Comps.increment();
+	if (leftChild_index < size && ary[leftChild_index] > ary[i])
+		largest_index = leftChild_index;
+	else
+		largest_index = i;
+
+	heap_sort_Comps.increment();
+	if (rightChild_index < size && ary[rightChild_index] > ary[largest_index])
+		largest_index = rightChild_index;
+	
+	if (largest_index != i) {
+		heap_sort_Swaps.increment();
+		swap(ary[i], ary[largest_index]);
+		max_heapify(ary, largest_index, size);
+	}
+
+}
+
+
+
 
 

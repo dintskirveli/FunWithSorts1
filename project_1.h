@@ -75,7 +75,8 @@ counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 counter merge_sort_Comps("merge_sort comparisons");
 counter adap_merge_sort_Comps("adap_merge_sort comparisons");
 counter adap20_merge_sort_Comps("adap20_merge_sort comparisons");
-counter heap_sort("heap_sort");
+counter heap_sort_Comps("heap_sort comparisons");
+counter heap_sort_Swaps("heap_sort exchanges");
 
 vector<counter> * getCounterVector() {
 	vector<counter> * counters = new vector<counter>();
@@ -94,7 +95,8 @@ vector<counter> * getCounterVector() {
 	counters->push_back(merge_sort_Comps);
 	counters->push_back(adap_merge_sort_Comps);
 	counters->push_back(adap20_merge_sort_Comps);
-
+	counters->push_back(heap_sort_Comps);
+	counters->push_back(heap_sort_Swaps);
 	return counters;
 }
 
@@ -119,17 +121,22 @@ void 	printArray 					(int ary [], int size);		// function print an array.
 void	printArray					(pair<int*, int>);			// function print an array.
 
 // Programming Project 2
-void	merge_sort					(int ary[], int size, int low, int high);
-void 	merge_sort					(pair<int*, int>);			// function performs merge_sort
+void	merge_sort					(int ary[], int size, int low, int high);	// function performs merge_sort
+void 	merge_sort					(pair<int*, int>);
 void 	merge 						(int ary[], int size, int low, int middle, int high);
-void	adap_merge_sort				(int ary[], int size, int low, int high);
-void 	adap_merge_sort				(pair<int*, int>);			// function performs merge_sort
+void	adap_merge_sort				(int ary[], int size, int low, int high);	// function performs merge_sort and insertion sort with last 100 elements
+void 	adap_merge_sort				(pair<int*, int>);
 void 	adap_merge 					(int ary[], int size, int low, int middle, int high);
-void  	merge_to_insertion			(int ary [], int size);		// function performs Insertion Sort.
-void	adap20_merge_sort			(int ary[], int size, int low, int high);
+void  	merge_to_insertion			(int ary [], int size);
+void	adap20_merge_sort			(int ary[], int size, int low, int high); 	// function performs merge_sort and insertion sort with last 20 elements
 void 	adap20_merge_sort			(pair<int*, int>);			// function performs merge_sort
 void 	adap20_merge 				(int ary[], int size, int low, int middle, int high);
-void  	merge20_to_insertion			(int ary [], int size);		// function performs Insertion Sort.
+void  	merge20_to_insertion		(int ary [], int size);		// function performs Insertion Sort.
+
+void	build_maxHeap				(int ary[], int size);
+void	max_heapify					(int ary[], int i, int size);
+void	heap_sort					(int ary[], int size);
+void 	heap_sort					(pair<int*, int>);
 
 const int SAMPLE_SIZES[] = { 500, 2500, 12500, 62500 };
 const int NUM_SAMPLE_SIZES = (sizeof SAMPLE_SIZES / sizeof SAMPLE_SIZES[0]);
