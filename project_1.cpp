@@ -1,205 +1,16 @@
 #include "project_1.h"
 
-int main() {
-
-	/*
-	
-	int nums [20];
-
-	for (int i = 0; i < 20; i++)
-		nums[i] = rand() % 1000;
-
-	cout << "Original Array \n";
-	printArray(nums, 20);
-
-	heap_sort(nums, 20);
-	
-	cout << "\nAfter heap_sort \n\n";
-	printArray(nums, 20);
-
-	cout << "\n";
-	return 0;
-
-	*/
-
-	///*
-	for (int i = 0; i<10; i++) {
-		vector < pair<int*, int> > * samples = initSamples();
-
-		// printSamples(samples);
-	    // performSearch(adap_sequencial_search1, samples);
-
-	    // performSearch(adap_sequencial_search2, samples);
-
-	    // performSearch(sequencial_search, samples);
-
-	    // performSearch(ordered_sequencial_search, samples);
-		// performSort(insertion_sort, samples);
-		
-		performSort(heap_sort, samples);
-
-		performSort(merge_sort, samples);
-		
-		// performSort(adap_merge_sort, samples);
-	    // performSort(adap20_merge_sort, samples);
-	   	
-	    // performSort(selection_sort, samples);
-	    //  performSort(bubble_sort, samples);
-	    
-		deallocSamples(samples);
-	}	
-	
-    char filename[] = "OMG.csv";
-    printCountersToCSV(filename);
-    //*/
-    
-}
-
-void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *samples) {
-	
-	vector< pair<int*, int> > *victim = copySamples(samples); 
-
-	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
-		pair<int *, int> p = *it;
-		cout<<"searching size: "<< p.second<<"\n";
-		int keyIndex = rand() % p.second;
-		f(p, p.first[keyIndex]);
-	}	
-	
-	deallocSamples(victim);
-}
-
-void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
-	vector< pair<int*, int> > *victim = copySamples(samples); 
-	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
-		pair<int *, int> p = *it;
-		cout<<"sorting size: "<<p.second<<"\n";
-		f(*it);
-	}
-	deallocSamples(victim);
-}
-
-void printCountersToCSV(char * filename) {
-	vector<counter> * counters = getCounterVector();
-	ofstream myfile;
-  	myfile.open (filename, fstream::app);
-  	/*myfile << ",";
-  	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
-		int size = SAMPLE_SIZES[i];	
-		for (int j = 0; j < 3; j++) {
-			switch(j) {
-				case 0:
-					myfile<<size<<"rand,";
-					break;
-				case 1:
-					myfile<<size<<"reverse,";
-					break;
-				case 2:
-					myfile<<size<<"twentypercent,";
-					break;
-				default:
-					cout << "WAT\n";
-					break;	
-			}
-		}
-	}
-	myfile << "\n";
-	*/
-	for (vector< counter >::iterator it = counters->begin() ; it != counters->end(); ++it) {
-		counter cur = *it;
-		
-		for (int i = 0; i < cur.numTrials();i++ ) {
-			myfile << cur.desc()<<",";
-			for (int j = 0; j < 12; j ++) {
-				myfile <<cur.at(j+12*i) <<",";
-			}
-			myfile<<"\n";
-		}
-		myfile<<"\n";
-	}
-
-  	myfile.close();
-}
-
-void createRandArray(int *a, int size) {
-	for (int i = 0; i < size; i++) {
-		a[i] = rand() % 1000000;
-	}
-}
-
-void createReverseArray(int *a, int size) {
-	for (int i = 0; i < size; i++) {
-		a[size - i - 1] = i;
-	}
-}
-
-void createTwentyPercentArray(int *a, int size) {
-	int sorted = size/5;
-
-	for (int i = 0; i < size; i++) {
-		a[i] = rand() % 1000000; 
-	}
-
-	vector<int> used;
-	for (int i = 0; i < sorted; i ++) {
-		used.push_back(rand() % size);
-	}
-
-	sort(used.begin(), used.end());
-	int count = 0;
-	for (vector<int>::iterator it=used.begin(); it!=used.end(); ++it) {
-		a[((int)*it)] = count++;
-	}
-}
-
-vector< pair<int*, int> > * initSamples() {
-	vector< pair<int*, int> > * samples = new vector< pair<int*, int> >();
-	srand(clock());
-	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
-		int size = SAMPLE_SIZES[i];	
-		for (int j = 0; j < 3; j++) {
-			int * cur = (int *)malloc(sizeof(int) * size);
-			switch(j) {
-				case 0:
-					createRandArray(cur, size);
-					break;
-				case 1:
-					createReverseArray(cur, size);
-					break;
-				case 2:
-					createTwentyPercentArray(cur, size);
-					break;
-				default:
-					cout << "WAT\n";
-					break;	
-			}
-			samples->push_back(make_pair(cur, size));
-		}
-	}
-	return samples;
-}
-
-vector< pair<int*, int> > * copySamples(vector< pair<int*, int> > * src) {
-	vector< pair<int*, int> > *dest = new vector< pair<int*, int> >();
-	for (vector<pair<int*,int> >::iterator it = src->begin() ; it != src->end(); ++it) {
-		pair<int *, int> p = *it;
-		int * ary = p.first;
-		int size = p.second;
-		int * newAry = (int *)malloc(sizeof(int) * size);
-		memcpy(newAry, ary, sizeof(int) * size);
-		dest->push_back(make_pair(newAry, size));
-	}
-	return dest;
-}
-
-void deallocSamples(vector< pair<int*, int> > *victim) {
-	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
-		pair<int *, int> p = *it;
-		int * ary = p.first;
-		free(ary);
-	}
-	delete victim;
-}
+counter bubbleComps("bubble comparisons");
+counter bubbleSwaps("bubble exchanges");
+counter adapBubbleComps("adap. bubble sort comparisons");
+counter adapBubbleSwaps("adap. bubble sort exchanges");
+counter insertionComps("insertion sort comparisons");
+counter selectionComps("selection sort comparisons");
+counter selectionSwaps("selection sort exchanges");
+counter sequencialComps("sequencial search comparisons");
+counter orderedSequencialComps("ordered sequencial search comparisons");
+counter adapSequence1Comps("adap_sequencial_search1 comparisons");
+counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 
 void bubble_sort(pair<int *, int> p) {
 	bubble_sort(p.first, p.second);
@@ -293,7 +104,7 @@ void selection_sort(int ary [], int size) {
 }
 
 int sequencial_search(pair<int*, int>p, int key) {
-	sequencial_search(p.first, p.second, key);
+	return sequencial_search(p.first, p.second, key);
 }
 
 int sequencial_search(int ary [], int size, int key) {
@@ -306,7 +117,7 @@ int sequencial_search(int ary [], int size, int key) {
 }
 
 int ordered_sequencial_search(pair<int*, int>p, int key) {
-	ordered_sequencial_search(p.first, p.second, key);
+	return ordered_sequencial_search(p.first, p.second, key);
 }
 
 int ordered_sequencial_search(int ary [], int size, int key) {
@@ -320,7 +131,7 @@ int ordered_sequencial_search(int ary [], int size, int key) {
 }
 
 int adap_sequencial_search1(pair<int*, int>p, int key) {
-	adap_sequencial_search1(p.first, p.second, key);
+	return adap_sequencial_search1(p.first, p.second, key);
 }
 
 int adap_sequencial_search1(int ary [], int size, int key) {
@@ -336,7 +147,7 @@ int adap_sequencial_search1(int ary [], int size, int key) {
 }
 
 int adap_sequencial_search2(pair<int*, int>p, int key) {
-	adap_sequencial_search2(p.first, p.second, key);
+	return adap_sequencial_search2(p.first, p.second, key);
 }
 
 int adap_sequencial_search2(int ary [], int size, int key) {
@@ -350,223 +161,3 @@ int adap_sequencial_search2(int ary [], int size, int key) {
 	}
 	return -1;
 }
-
-// Programming Project 2
-
-void merge_sort(pair<int*, int> p) {
-	merge_sort_Comps.next();
-	merge_sort(p.first, p.second, 0, p.second - 1);
-}
-
-void merge_sort(int ary [], int size, int low, int high) {
-	if (low < high) {
-		int middle = (low + high)/2;			// divide: get the middle element
-		merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
-		merge_sort(ary, size, middle + 1, high);// merge_sort the right part of the array
-		merge(ary, size, low, middle, high);	// combine the sub arrays
-	}
-}
-
-void merge (int ary [], int size, int low, int middle, int high) {
-	
-	int temp[size];
-	for (int i = low; i <= high; i++) {
-		temp[i] = ary[i];
-	}
-
-	int i = low;
-	int j = middle + 1;
-	int k = low;
-
-	while ( i <= middle && j <= high) {
-		if (temp[i] <= temp[j]) {
-			ary[k] = temp[i];
-			i++;
-		} else {
-			ary[k] = temp[j];
-			j++;
-		}
-		k++;
-		merge_sort_Comps.increment();
-	}
-
-	while (i <= middle) {
-		ary[k] = temp[i];
-		k++;
-		i++;
-	}
-}
-
-void adap_merge_sort(pair<int*, int> p) {
-	adap_merge_sort_Comps.next();
-	adap_merge_sort(p.first, p.second, 0, p.second - 1);
-}
-
-void adap_merge_sort(int ary [], int size, int low, int high) {
-	if (high <= low + 100 - 1) {
-		merge_to_insertion(ary, high - low + 1);
-		return;
-	} else if (low < high) {
-		int middle = (low + high)/2;			// divide: get the middle element
-		adap_merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
-		adap_merge_sort(ary, size, middle + 1, high);// merge_sort the right part of the array
-		adap_merge(ary, size, low, middle, high);	// combine the sub arrays
-	}
-}
-
-void adap_merge (int ary [], int size, int low, int middle, int high) {
-	
-	int temp[size];
-	for (int i = low; i <= high; i++) {
-		temp[i] = ary[i];
-	}
-
-	int i = low;
-	int j = middle + 1;
-	int k = low;
-
-	while ( i <= middle && j <= high) {
-		if (temp[i] <= temp[j]) {
-			ary[k] = temp[i];
-			i++;
-		} else {
-			ary[k] = temp[j];
-			j++;
-		}
-		k++;
-		adap_merge_sort_Comps.increment();
-	}
-
-	while (i <= middle) {
-		ary[k] = temp[i];
-		k++;
-		i++;
-	}
-}
-
-void merge_to_insertion(int ary [], int size) {
-	int i, j, key;
-	for (i = 1; i < size; i++) {
-		key = ary[i];
-		j = i - 1;
-		while (j >= 0 && ary[j] > key) {
-			adap_merge_sort_Comps.increment();
-			ary[j + 1] = ary[j];
-			j = j - 1;
-		}
-		ary[j + 1] = key;
-	}
-}
-
-void adap20_merge_sort(pair<int*, int> p) {
-	adap20_merge_sort_Comps.next();
-	adap20_merge_sort(p.first, p.second, 0, p.second - 1);
-}
-
-void adap20_merge_sort(int ary [], int size, int low, int high) {
-	if (high <= low + 20 - 1) {
-		merge_to_insertion(ary, high - low + 1);
-		return;
-	} else if (low < high) {
-		int middle = (low + high)/2;					// divide: get the middle element
-		adap20_merge_sort(ary, size, low, middle);		// merge_sort the left part of the array
-		adap20_merge_sort(ary, size, middle + 1, high);	// merge_sort the right part of the array
-		adap20_merge(ary, size, low, middle, high);		// combine the sub arrays
-	}
-}
-
-void adap20_merge (int ary [], int size, int low, int middle, int high) {
-	
-	int temp[size];
-	for (int i = low; i <= high; i++) {
-		temp[i] = ary[i];
-	}
-
-	int i = low;
-	int j = middle + 1;
-	int k = low;
-
-	while ( i <= middle && j <= high) {
-		if (temp[i] <= temp[j]) {
-			ary[k] = temp[i];
-			i++;
-		} else {
-			ary[k] = temp[j];
-			j++;
-		}
-		k++;
-		adap20_merge_sort_Comps.increment();
-	}
-
-	while (i <= middle) {
-		ary[k] = temp[i];
-		k++;
-		i++;
-	}
-}
-
-void merge20_to_insertion(int ary [], int size) {
-	int i, j, key;
-	for (i = 1; i < size; i++) {
-		key = ary[i];
-		j = i - 1;
-		while (j >= 0 && ary[j] > key) {
-			adap20_merge_sort_Comps.increment();
-			ary[j + 1] = ary[j];
-			j = j - 1;
-		}
-		ary[j + 1] = key;
-	}
-}
-
-// Heapsort
-
-void heap_sort(pair<int*, int> p) {
-	heap_sort_Comps.next();
-	heap_sort_Swaps.next();
-	heap_sort(p.first, p.second);
-}
-
-void heap_sort(int ary [], int size) {
-	build_maxHeap(ary, size);
-	for (int i = size - 1; i >= 1; i--) {
-		heap_sort_Swaps.increment();
-		swap(ary[0], ary[i]);
-		size -= 1;
-		max_heapify(ary, 0, size);
-	}
-}
-
-void build_maxHeap(int ary [], int size) {
-	for(int i = size/2; i >= 0; i--)
-        max_heapify(ary, i, size);
-}
-
-void max_heapify(int ary [], int i, int size) {
-	int leftChild_index = 2 * i + 1;
-	int rightChild_index = 2 * i + 2;
-
-	int largest_index;
-
-	heap_sort_Comps.increment();
-	if (leftChild_index < size && ary[leftChild_index] > ary[i])
-		largest_index = leftChild_index;
-	else
-		largest_index = i;
-
-	heap_sort_Comps.increment();
-	if (rightChild_index < size && ary[rightChild_index] > ary[largest_index])
-		largest_index = rightChild_index;
-	
-	if (largest_index != i) {
-		heap_sort_Swaps.increment();
-		swap(ary[i], ary[largest_index]);
-		max_heapify(ary, largest_index, size);
-	}
-
-}
-
-
-
-
-

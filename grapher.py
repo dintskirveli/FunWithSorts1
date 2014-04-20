@@ -28,6 +28,13 @@ def initSeries() :
 		seriesy.append([])
 	return seriesy
 
+#true if should be a bar graph
+def isBarGraph(counterName) :
+	if (counterName.lower().find("search") != -1):
+		return False
+	else :
+		return True
+
 width = int(sys.argv[1])
 height = int(sys.argv[2])
 
@@ -58,15 +65,22 @@ for key in seriesDict:
 	fig.set_size_inches(width / dpi, height / dpi) 
 	plt.ylabel("Counter")
 	plt.xlabel("run #")
-	
-	for i in range(12):
-		l = i2str(i)
-		print seriesy[i], " ", l
-		plt.plot(seriesy[i], label=l)
-	
+
+	if isBarGraph(key):
+		plt.bar(range(12), [sum(s)/len(s) for s in [seriesy[i] for i in range(12)]] )
+		plt.xticks(range(12), [i2str(i) for i in range(12)], rotation = 45, ha='center')
+	else :
+		for i in range(12):
+			l = i2str(i)
+			print seriesy[i], average," ", l
+			averages.append(average)
+			plt.plot(seriesy[i], label=l)
+		#plt.
+
+	#
 	plt.title(key)
 	plt.legend(loc="upper left")
-	plt.savefig(key)
+	plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
 
 
 
