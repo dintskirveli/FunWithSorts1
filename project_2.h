@@ -13,7 +13,8 @@ extern timer mergeSortTime;
 extern timer adapMergeSortTime;
 extern timer adap20SortTime;
 extern timer heapSortTime;
-
+extern timer quickSort1Time;
+extern timer quickToInsertSortTime;
 
 void	build_maxHeap				(int ary[], int size);
 void	max_heapify					(int ary[], int i, int size);
@@ -31,6 +32,14 @@ void	adap20_merge_sort			(int ary[], int size, int low, int high); 	// function 
 void 	adap20_merge_sort			(pair<int*, int>);			// function performs merge_sort
 void 	adap20_merge 				(int ary[], int size, int low, int middle, int high);
 void  	merge20_to_insertion		(int ary [], int size);		// function performs Insertion Sort.
+void 	quickSort 					( int *a, int first, int last );
+void quickSort(pair<int*, int> p);
+int partition(int *a, int first, int last, int value);
+void quickToInsertSort(pair<int*, int> p);
+void quickToInsertSort( int *a, int first, int last );
+
+void quickMedianOfThreeSort( int *a, int first, int last );
+void quickMedianOfThreeToInsertionSort( int *a, int first, int last );
 
 vector<int> project2getSampleSizes();
 vector<SAMPLETYPE> project2getSampleTypes();

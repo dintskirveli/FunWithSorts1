@@ -9,6 +9,15 @@ char project_1_filename[] = "project_1.csv";
 char project_2_filename[] = "project_2.csv";
 
 int main() {
+	/*
+	int size = 11;
+	int * a = (int *) malloc(size * sizeof(int));
+	srand(clock());
+	createRandArray(a, size);
+	printArray(a, size);
+	//test sort here 
+	printArray(a, size);
+	*/
 	project_1();
 	project_2();
 }
@@ -30,8 +39,8 @@ void project_2() {
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project2getSampleSizes(), project2getSampleTypes());
 
-		performSort(heap_sort, samples);
-
+		//performSort(heap_sort, samples);
+		performSort(quickSort, samples);
 		//performSort(merge_sort, samples);
 
 		deallocSamples(samples);

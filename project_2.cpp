@@ -6,10 +6,13 @@ counter adap20_merge_sort_Comps("adap20_merge_sort comparisons");
 counter heap_sort_Comps("heap_sort comparisons");
 counter heap_sort_Swaps("heap_sort exchanges");
 
+
 timer mergeSortTime("merge sort time");
 timer adapMergeSortTime("adap merge sort time");
 timer adap20SortTime("adap20 sort time");
 timer heapSortTime("heap sort time");
+timer quickSort1Time("vanilla quicksort time");
+timer quickToInsertSortTime("quick to insertion sort time");
 
 vector<int> project2getSampleSizes() {
 	vector<int> project_2_sizes;
@@ -46,6 +49,8 @@ vector<timer> * project2TimerVector() {
 	timers->push_back(adapMergeSortTime);
 	timers->push_back(adap20SortTime);
 	timers->push_back(heapSortTime);
+	timers->push_back(quickSort1Time);
+	timers->push_back(quickToInsertSortTime);
 	return timers;
 } 
 
@@ -271,7 +276,102 @@ void max_heapify(int ary [], int i, int size) {
 		swap(ary[i], ary[largest_index]);
 		max_heapify(ary, largest_index, size);
 	}
+}
 
+void quickSort(pair<int*, int> p) {
+	quickSort1Time.next();
+	quickSort1Time.start();
+	quickSort(p.first, 0, p.second-1);
+	quickSort1Time.stop();
+}
+
+int partition(int* input, int p, int r, int value)
+{
+    int pivot = value;
+    if (value == -1) pivot = input[r];
+    while ( p < r )
+    {
+        while ( input[p] < pivot ) p++;
+        while ( input[r] > pivot ) r--;
+        if ( input[p] == input[r] ) p++;
+
+        if ( p < r ) {
+            swap(input[p], input[r]);
+        } else {
+        	break;
+        }
+    }
+    return r;
+}
+
+
+void quickSort( int *a, int first, int last ) {
+    if(first < last)
+    {
+        int pivotElement = partition(a, first, last, -1);
+        quickSort(a, first, pivotElement-1);
+        quickSort(a, pivotElement+1, last);
+    }
+}
+
+void quickToInsertSort(pair<int*, int> p) {
+	quickToInsertSortTime.next();
+	quickToInsertSortTime.start();
+	quickToInsertSort( p.first, 0, p.second-1);
+	quickToInsertSortTime.stop();
+}
+
+void insertion_sort(int ary [], int first, int last) {
+	int i, j, key;
+	for (i = first + 1; i <= last; i++) {
+		key = ary[i];
+		j = i - 1;
+		while (j >= first && ary[j] > key) {
+			ary[j + 1] = ary[j];
+			j = j - 1;
+		}
+		ary[j + 1] = key;
+	}
+}
+
+void quickToInsertSort( int *a, int first, int last ) {
+ 	if (last - first < 50) {
+ 		insertion_sort(a, first, last);
+ 		return;
+ 	}
+    if(first < last)
+    {
+        int pivotElement = partition(a, first, last, -1);
+        quickToInsertSort(a, first, pivotElement-1);
+        quickToInsertSort(a, pivotElement+1, last);
+    }
+}
+int medianOfThree(int * a, int first, int last) {
+    return max(min(a[first],a[last]), min(max(a[first],a[last]),a[(first + last)/2]));
+}
+
+void quickMedianOfThreeSort( int *a, int first, int last ) {
+    if(first < last)
+    {
+    	int value = medianOfThree(a, first, last);
+        int pivotElement = partition(a, first, last, value);
+        quickMedianOfThreeSort(a, first, pivotElement-1);
+        quickMedianOfThreeSort(a, pivotElement+1, last);
+    }
+}
+
+void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
+    if (last - first < 50) {
+ 		insertion_sort(a, first, last);
+ 		return;
+ 	}
+    if(first < last)
+    {
+    	int value = medianOfThree(a, first, last);
+        int pivotElement = partition(a, first, last, value);
+        quickMedianOfThreeToInsertionSort(a, first, pivotElement-1);
+        quickMedianOfThreeToInsertionSort(a, pivotElement+1, last);
+    }
 }
 
 
