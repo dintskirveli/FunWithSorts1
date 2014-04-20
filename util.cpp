@@ -242,3 +242,12 @@ void printSamples (vector< pair<int*, int> > * s) {
 		printArray(p);
 	}
 }
+
+bool isSorted(int *a, int size) {
+	for (int i = 1; i< size; i++){
+		if (a[i-1] > a[i]) {
+			return false;
+		}
+	}
+	return true;
+}

@@ -1,24 +1,17 @@
 #include "util.h"
 #include "project_1.h"
 #include "project_2.h"
+#include <assert.h>
 
-vector<counter> * getCounterVector();
 void project_1();
 void project_2();
+void testSort(void f(int *, int), int size);
 char project_1_filename[] = "project_1.csv";
 char project_2_filename[] = "project_2.csv";
 
 int main() {
-	
-	int size = 11;
-	int * a = (int *) malloc(size * sizeof(int));
-	srand(clock());
-	createRandArray(a, size);
-	printArray(a, size);
-	//test sort here 
-	shellSort(a, size);
-	printArray(a, size);
-	
+	testSort(shellSort, 100);
+
 	//project_1();
 	//project_2();
 }
@@ -48,4 +41,14 @@ void project_2() {
 	}
 	printCountersToCSV(project_2_filename, project2CounterVector(), project2getSampleSizes(), project2getSampleTypes(), true);
 	printTimersToCSV(project_2_filename, project2TimerVector(), project2getSampleSizes(), project2getSampleTypes(), false);
+}
+
+void testSort(void f(int *, int), int size) {
+	int * a = (int *) malloc(size * sizeof(int));
+	srand(clock());
+	createRandArray(a, size);
+	cout << "testing sort...\n";
+	f(a, size);
+	assert(isSorted(a, size));
+	cout << "passed.\n";
 }
