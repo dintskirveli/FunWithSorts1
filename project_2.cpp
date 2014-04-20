@@ -285,18 +285,18 @@ void quickSort(pair<int*, int> p) {
 	quickSort1Time.stop();
 }
 
-int partition(int* input, int p, int r, int value)
+int partition(int* a, int p, int r, int value)
 {
     int pivot = value;
-    if (value == -1) pivot = input[r];
+    if (value == -1) pivot = a[r];
     while ( p < r )
     {
-        while ( input[p] < pivot ) p++;
-        while ( input[r] > pivot ) r--;
-        if ( input[p] == input[r] ) p++;
+        while ( a[p] < pivot ) p++;
+        while ( a[r] > pivot ) r--;
+        if ( a[p] == a[r] ) p++;
 
         if ( p < r ) {
-            swap(input[p], input[r]);
+            swap(a[p], a[r]);
         } else {
         	break;
         }
@@ -306,8 +306,7 @@ int partition(int* input, int p, int r, int value)
 
 
 void quickSort( int *a, int first, int last ) {
-    if(first < last)
-    {
+    if(first < last) {
         int pivotElement = partition(a, first, last, -1);
         quickSort(a, first, pivotElement-1);
         quickSort(a, pivotElement+1, last);
@@ -337,10 +336,7 @@ void insertion_sort(int ary [], int first, int last) {
 void quickToInsertSort( int *a, int first, int last ) {
  	if (last - first < 50) {
  		insertion_sort(a, first, last);
- 		return;
- 	}
-    if(first < last)
-    {
+ 	} else if(first < last) {
         int pivotElement = partition(a, first, last, -1);
         quickToInsertSort(a, first, pivotElement-1);
         quickToInsertSort(a, pivotElement+1, last);
@@ -351,8 +347,7 @@ int medianOfThree(int * a, int first, int last) {
 }
 
 void quickMedianOfThreeSort( int *a, int first, int last ) {
-    if(first < last)
-    {
+    if(first < last) {
     	int value = medianOfThree(a, first, last);
         int pivotElement = partition(a, first, last, value);
         quickMedianOfThreeSort(a, first, pivotElement-1);
@@ -363,10 +358,7 @@ void quickMedianOfThreeSort( int *a, int first, int last ) {
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
     if (last - first < 50) {
  		insertion_sort(a, first, last);
- 		return;
- 	}
-    if(first < last)
-    {
+ 	} else if(first < last) {
     	int value = medianOfThree(a, first, last);
         int pivotElement = partition(a, first, last, value);
         quickMedianOfThreeToInsertionSort(a, first, pivotElement-1);
@@ -374,6 +366,15 @@ void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
     }
 }
 
+void shellSort(int * a, int size) {
+    int n = size;
+    for (int incr = n/2; incr > 0; incr /= 2)
+        for (int i = incr; i < n; i++)
+            for (int j=i-incr; j>=0 && a[j]>a[j+incr]; j-=incr) {
+                swap(a[j],a[j+incr]);
+            }
+
+}
 
 
 

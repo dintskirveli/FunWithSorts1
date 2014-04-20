@@ -40,6 +40,7 @@ void quickToInsertSort( int *a, int first, int last );
 
 void quickMedianOfThreeSort( int *a, int first, int last );
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last );
+void shellSort(int * a, int size);
 
 vector<int> project2getSampleSizes();
 vector<SAMPLETYPE> project2getSampleTypes();

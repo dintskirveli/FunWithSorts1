@@ -9,17 +9,18 @@ char project_1_filename[] = "project_1.csv";
 char project_2_filename[] = "project_2.csv";
 
 int main() {
-	/*
+	
 	int size = 11;
 	int * a = (int *) malloc(size * sizeof(int));
 	srand(clock());
 	createRandArray(a, size);
 	printArray(a, size);
 	//test sort here 
+	shellSort(a, size);
 	printArray(a, size);
-	*/
-	project_1();
-	project_2();
+	
+	//project_1();
+	//project_2();
 }
 
 void project_1() {
