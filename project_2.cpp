@@ -6,9 +6,55 @@ counter adap20_merge_sort_Comps("adap20_merge_sort comparisons");
 counter heap_sort_Comps("heap_sort comparisons");
 counter heap_sort_Swaps("heap_sort exchanges");
 
+timer mergeSortTime("merge sort time");
+timer adapMergeSortTime("adap merge sort time");
+timer adap20SortTime("adap20 sort time");
+timer heapSortTime("heap sort time");
+
+vector<int> project2getSampleSizes() {
+	vector<int> project_2_sizes;
+	project_2_sizes.push_back(2500);
+	project_2_sizes.push_back(12500);
+	project_2_sizes.push_back(62500);
+	project_2_sizes.push_back(312500);
+	return project_2_sizes;
+}
+
+vector<SAMPLETYPE> project2getSampleTypes() {
+	vector<SAMPLETYPE> project_2_sample_types;
+	project_2_sample_types.push_back(RANDOM);
+	project_2_sample_types.push_back(TWENTY_PERCENT);
+	project_2_sample_types.push_back(FIFTY_PERCENT);
+	return project_2_sample_types;
+}
+
+vector<counter> * project2CounterVector() {
+	vector<counter> * counters = new vector<counter>();
+
+	counters->push_back(merge_sort_Comps);
+	counters->push_back(adap_merge_sort_Comps);
+	counters->push_back(adap20_merge_sort_Comps);
+	counters->push_back(heap_sort_Comps);
+	counters->push_back(heap_sort_Swaps);
+	return counters;
+} 
+
+vector<timer> * project2TimerVector() {
+	vector<timer> * timers = new vector<timer>();
+
+	timers->push_back(mergeSortTime);
+	timers->push_back(adapMergeSortTime);
+	timers->push_back(adap20SortTime);
+	timers->push_back(heapSortTime);
+	return timers;
+} 
+
 void merge_sort(pair<int*, int> p) {
 	merge_sort_Comps.next();
+	mergeSortTime.next();
+	mergeSortTime.start();
 	merge_sort(p.first, p.second, 0, p.second - 1);
+	mergeSortTime.stop();
 }
 
 void merge_sort(int ary [], int size, int low, int high) {
@@ -52,7 +98,10 @@ void merge (int ary [], int size, int low, int middle, int high) {
 
 void adap_merge_sort(pair<int*, int> p) {
 	adap_merge_sort_Comps.next();
+	adapMergeSortTime.next();
+	adapMergeSortTime.start();
 	adap_merge_sort(p.first, p.second, 0, p.second - 1);
+	adapMergeSortTime.start();
 }
 
 void adap_merge_sort(int ary [], int size, int low, int high) {
@@ -113,7 +162,10 @@ void merge_to_insertion(int ary [], int size) {
 
 void adap20_merge_sort(pair<int*, int> p) {
 	adap20_merge_sort_Comps.next();
+	adap20SortTime.next();
+	adap20SortTime.start();
 	adap20_merge_sort(p.first, p.second, 0, p.second - 1);
+	adap20SortTime.stop();
 }
 
 void adap20_merge_sort(int ary [], int size, int low, int high) {
@@ -175,12 +227,15 @@ void merge20_to_insertion(int ary [], int size) {
 // Heapsort
 
 void heap_sort(pair<int*, int> p) {
+	heap_sort_Comps.next();
+	heap_sort_Swaps.next();
+	heapSortTime.next();
+	heapSortTime.start();
 	heap_sort(p.first, p.second);
+	heapSortTime.stop();
 }
 
 void heap_sort(int ary [], int size) {
-	heap_sort_Comps.next();
-	heap_sort_Swaps.next();
 	build_maxHeap(ary, size);
 	for (int i = size - 1; i >= 1; i--) {
 		heap_sort_Swaps.increment();

@@ -15,14 +15,15 @@ using namespace std;
 #include <string>
 
 #include "counter.h"
+#include "timer.h"
 
 using namespace std;
 
-const int SAMPLE_SIZES[] = { 500, 2500, 12500, 62500 };
-const int NUM_SAMPLE_SIZES = (sizeof SAMPLE_SIZES / sizeof SAMPLE_SIZES[0]);
+enum SAMPLETYPE { RANDOM, REVERSE, TWENTY_PERCENT, FIFTY_PERCENT };
 
-void printCountersToCSV(char * filename, vector<counter> * counters);
-vector < pair<int*, int> > * initSamples();
+void printCountersToCSV(char * filename, vector<counter> * counters, vector<int> sizes, vector<SAMPLETYPE> types, bool printHeader);
+void printTimersToCSV(char * filename, vector<timer> * timers, vector<int> sizes, vector<SAMPLETYPE> types, bool printHeader);
+vector < pair<int*, int> > * initSamples(vector<int> sizes, vector<SAMPLETYPE> types);
 vector< pair<int*, int> > * copySamples(vector< pair<int*, int> > * p);
 void deallocSamples(vector< pair<int*, int> > * victim);
 void performSort(void f(pair<int*, int>), vector< pair<int*, int> > * samples);
@@ -33,6 +34,7 @@ void printArray(int ary[], int size);
 void printSamples (vector< pair<int*, int> > * s);
 
 void createTwentyPercentArray(int *a, int size);
+void createFiftyPercentArray(int *a, int size);
 void createRandArray(int *a, int size);
 void createReverseArray(int *a, int size);
 

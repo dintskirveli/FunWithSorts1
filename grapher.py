@@ -2,25 +2,16 @@ import matplotlib.pyplot as plt
 import csv
 import sys
 
+indexToNameMap = {};
+def processHeader(row) :
+	count = 0 
+	for mapping in enumerate(row):
+		count += 1
+		indexToNameMap[mapping[0]] = mapping[1]
+	return count
 
 def i2str(i):
-	if i < 3:
-		size = 500
-	elif i < 6:
-		size = 2500
-	elif i < 9:
-		size = 12500
-	else : 
-		size = 62500
-	type = i % 3
-	strtype = ""
-	if type == 0:
-		strtype = "random"
-	elif type == 1: 
-		strtype = "reverse"
-	else :
-		strtype = "20 percent"
-	return strtype+ ": "+str(size)
+	return indexToNameMap[i]
 
 def initSeries() :
 	seriesy = []
@@ -38,49 +29,62 @@ def isBarGraph(counterName) :
 width = int(sys.argv[1])
 height = int(sys.argv[2])
 
-seriesDict = {}
-title = ""
-with open('OMG.csv', 'rb') as csvfile:
-	reader = csv.reader(csvfile)
-	for row in reader:
-		row = row[:-1]
-		for item in enumerate(row):
-			if item[0] == 0:
-				#ignore, is title
-				title = item[1]
-			else :
-				try:
-					y = seriesDict[title]
-				except KeyError:
-					seriesDict[title] = initSeries()
-					y = seriesDict[title]
-				index = item[0]-1
-				y[index].append(int(item[1]))
+files = ["project_1.csv", "project_2.csv"]
 
-for key in seriesDict:
-	print key
-	seriesy = seriesDict[key]
-	fig = plt.figure()
-	dpi = fig.dpi 
-	fig.set_size_inches(width / dpi, height / dpi) 
-	plt.ylabel("Counter")
-	plt.xlabel("run #")
+for file in files:
+	seriesDict = {}
+	title = ""
+	processedHeader = False
+	schemaSize = 0;
+	with open(file, 'rb') as csvfile:
+		reader = csv.reader(csvfile)
+		for row in reader:
+			if not processedHeader :
+				row = row[1:-1]
+				schemaSize = processHeader(row)
+				print schemaSize
+				print indexToNameMap
+				processedHeader = True
+				continue
 
-	if isBarGraph(key):
-		plt.bar(range(12), [sum(s)/len(s) for s in [seriesy[i] for i in range(12)]] )
-		plt.xticks(range(12), [i2str(i) for i in range(12)], rotation = 45, ha='center')
-	else :
-		for i in range(12):
-			l = i2str(i)
-			print seriesy[i], average," ", l
-			averages.append(average)
-			plt.plot(seriesy[i], label=l)
-		#plt.
+			row = row[:-1]
+			for item in enumerate(row):
+				if item[0] == 0:
+					#ignore, is title
+					title = item[1]
+				else :
+					try:
+						y = seriesDict[title]
+					except KeyError:
+						seriesDict[title] = initSeries()
+						y = seriesDict[title]
+					index = item[0]-1
+					y[index].append(int(item[1]))
 
-	#
-	plt.title(key)
-	plt.legend(loc="upper left")
-	plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
+	for key in seriesDict:
+		print key
+		seriesy = seriesDict[key]
+		fig = plt.figure()
+		dpi = fig.dpi 
+		fig.set_size_inches(width / dpi, height / dpi) 
+		plt.ylabel("Counter value")
+		plt.xlabel("Counter name")
+
+		if isBarGraph(key):
+			plt.bar(range(schemaSize), [sum(s)/len(s) for s in [seriesy[i] for i in range(schemaSize)]] )
+			plt.xticks(range(schemaSize), [i2str(i) for i in range(schemaSize)], rotation = 45, ha='right')
+		else :
+			for i in range(schemaSize):
+				l = i2str(i)
+				print seriesy[i], average," ", l
+				averages.append(average)
+				plt.plot(seriesy[i], label=l)
+			#plt.
+
+		#
+		plt.title(key)
+		plt.legend(loc="upper left")
+		plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
 
 
 

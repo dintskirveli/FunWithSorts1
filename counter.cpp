@@ -29,8 +29,8 @@ string counter::desc() {
 	return description;
 }
 
-int counter::numTrials() {
-	return runs->size()/12;
+int counter::size() {
+	return runs->size();
 }
 
 void counter::next() {

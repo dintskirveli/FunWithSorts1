@@ -9,6 +9,12 @@ extern counter adap20_merge_sort_Comps;
 extern counter heap_sort_Comps;
 extern counter heap_sort_Swaps;
 
+extern timer mergeSortTime;
+extern timer adapMergeSortTime;
+extern timer adap20SortTime;
+extern timer heapSortTime;
+
+
 void	build_maxHeap				(int ary[], int size);
 void	max_heapify					(int ary[], int i, int size);
 void	heap_sort					(int ary[], int size);
@@ -26,4 +32,8 @@ void 	adap20_merge_sort			(pair<int*, int>);			// function performs merge_sort
 void 	adap20_merge 				(int ary[], int size, int low, int middle, int high);
 void  	merge20_to_insertion		(int ary [], int size);		// function performs Insertion Sort.
 
+vector<int> project2getSampleSizes();
+vector<SAMPLETYPE> project2getSampleTypes();
+vector<counter> * project2CounterVector();
+vector<timer> * project2TimerVector();
 #endif

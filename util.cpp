@@ -1,37 +1,94 @@
 #include "util.h"
 
-void printCountersToCSV(char * filename, vector<counter> * counters) {
+void printCountersToCSV(char * filename, vector<counter> * counters, vector<int> sizes, vector<SAMPLETYPE> types, bool printHeader) {
 	ofstream myfile;
   	myfile.open (filename, fstream::app);
-  	/*myfile << ",";
-  	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
-		int size = SAMPLE_SIZES[i];	
-		for (int j = 0; j < 3; j++) {
-			switch(j) {
-				case 0:
-					myfile<<size<<"rand,";
-					break;
-				case 1:
-					myfile<<size<<"reverse,";
-					break;
-				case 2:
-					myfile<<size<<"twentypercent,";
-					break;
-				default:
-					cout << "WAT\n";
-					break;	
+
+  	int oneTrial = sizes.size()*types.size();
+  	if (printHeader) {
+	  	myfile<<",";
+	  	for (vector<int>::iterator i = sizes.begin() ; i != sizes.end(); ++i) {
+			int size = *i;
+			for (vector<SAMPLETYPE>::iterator j = types.begin() ; j != types.end(); ++j) {
+				SAMPLETYPE type = *j;
+				switch(type) {
+					case RANDOM:
+						myfile<<"Random ("<<size<<"),";
+						break;
+					case REVERSE:
+						myfile<<"Reverse ("<<size<<"),";
+						break;
+					case TWENTY_PERCENT:
+						myfile<<"Twenty percent sorted ("<<size<<"),";
+						break;
+					case FIFTY_PERCENT:
+						myfile<<"Fifty percent sorted ("<<size<<"),";
+						break;
+					default:
+						cout << "WAT\n";
+						break;	
+				}
 			}
 		}
+		myfile<<"\n";
 	}
-	myfile << "\n";
-	*/
+
 	for (vector< counter>::iterator it = counters->begin() ; it != counters->end(); ++it) {
 		counter cur = *it;
-		
-		for (int i = 0; i < cur.numTrials();i++ ) {
+		int numTrials = cur.size()/oneTrial;
+		for (int i = 0; i < numTrials;i++ ) {
 			myfile << cur.desc()<<",";
-			for (int j = 0; j < 12; j ++) {
-				myfile <<cur.at(j+12*i) <<",";
+			for (int j = 0; j < oneTrial; j ++) {
+				myfile <<cur.at(j+oneTrial*i) <<",";
+			}
+			myfile<<"\n";
+		}
+		myfile<<"\n";
+	}
+
+  	myfile.close();
+}
+
+void printTimersToCSV(char * filename, vector<timer> * timers, vector<int> sizes, vector<SAMPLETYPE> types, bool printHeader) {
+	ofstream myfile;
+  	myfile.open (filename, fstream::app);
+
+  	int oneTrial = sizes.size()*types.size();
+  	if (printHeader) {
+	  	myfile<<",";
+	  	for (vector<int>::iterator i = sizes.begin() ; i != sizes.end(); ++i) {
+			int size = *i;
+			for (vector<SAMPLETYPE>::iterator j = types.begin() ; j != types.end(); ++j) {
+				SAMPLETYPE type = *j;
+				switch(type) {
+					case RANDOM:
+						myfile<<"Random ("<<size<<"),";
+						break;
+					case REVERSE:
+						myfile<<"Reverse ("<<size<<"),";
+						break;
+					case TWENTY_PERCENT:
+						myfile<<"Twenty percent sorted ("<<size<<"),";
+						break;
+					case FIFTY_PERCENT:
+						myfile<<"Fifty percent sorted ("<<size<<"),";
+						break;
+					default:
+						cout << "WAT\n";
+						break;	
+				}
+			}
+		}
+		myfile<<"\n";
+	}
+
+	for (vector< timer>::iterator it = timers->begin() ; it != timers->end(); ++it) {
+		timer cur = *it;
+		int numTrials = cur.size()/oneTrial;
+		for (int i = 0; i < numTrials;i++ ) {
+			myfile << cur.desc()<<",";
+			for (int j = 0; j < oneTrial; j ++) {
+				myfile <<cur.at(j+oneTrial*i) <<",";
 			}
 			myfile<<"\n";
 		}
@@ -94,23 +151,46 @@ void createTwentyPercentArray(int *a, int size) {
 	}
 }
 
+void createFiftyPercentArray(int *a, int size) {
+	int sorted = size/2;
 
-vector< pair<int*, int> > * initSamples() {
+	for (int i = 0; i < size; i++) {
+		a[i] = rand() % 1000000; 
+	}
+
+	vector<int> used;
+	for (int i = 0; i < sorted; i ++) {
+		used.push_back(rand() % size);
+	}
+
+	sort(used.begin(), used.end());
+	int count = 0;
+	for (vector<int>::iterator it=used.begin(); it!=used.end(); ++it) {
+		a[((int)*it)] = count++;
+	}
+}
+
+
+vector< pair<int*, int> > * initSamples(vector<int> sizes, vector<SAMPLETYPE> types) {
 	vector< pair<int*, int> > * samples = new vector< pair<int*, int> >();
 	srand(clock());
-	for (int i = 0; i < NUM_SAMPLE_SIZES; i++) {
-		int size = SAMPLE_SIZES[i];	
-		for (int j = 0; j < 3; j++) {
+	for (vector<int>::iterator i = sizes.begin() ; i != sizes.end(); ++i) {
+		int size = *i;
+		for (vector<SAMPLETYPE>::iterator j = types.begin() ; j != types.end(); ++j) {
+			SAMPLETYPE type = *j;
 			int * cur = (int *)malloc(sizeof(int) * size);
-			switch(j) {
-				case 0:
+			switch(type) {
+				case RANDOM:
 					createRandArray(cur, size);
 					break;
-				case 1:
+				case REVERSE:
 					createReverseArray(cur, size);
 					break;
-				case 2:
+				case TWENTY_PERCENT:
 					createTwentyPercentArray(cur, size);
+					break;
+				case FIFTY_PERCENT:
+					createFiftyPercentArray(cur, size);
 					break;
 				default:
 					cout << "WAT\n";

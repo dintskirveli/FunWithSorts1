@@ -3,41 +3,39 @@
 #include "project_2.h"
 
 vector<counter> * getCounterVector();
+void project_1();
+void project_2();
+char project_1_filename[] = "project_1.csv";
+char project_2_filename[] = "project_2.csv";
 
 int main() {
-	for (int i = 0; i<10; i++) {
-		vector < pair<int*, int> > * samples = initSamples();
+	project_1();
+	project_2();
+}
 
-		performSort(heap_sort, samples);
+void project_1() {
+	int runs = 10;
+	for (int i = 0; i<runs; i++) {
+		vector < pair<int*, int> > * samples = initSamples(project1getSampleSizes(), project1getSampleTypes());
 
-		performSort(merge_sort, samples);
+
 
 		deallocSamples(samples);
 	}
-	char filename[] = "OMG.csv";
-
-    printCountersToCSV(filename, getCounterVector());
+	printCountersToCSV(project_1_filename, project1CounterVector(), project1getSampleSizes(), project1getSampleTypes(), true);
 }
 
-vector<counter> * getCounterVector() {
-	vector<counter> * counters = new vector<counter>();
-	//project 1
-	counters->push_back(bubbleComps);
-	counters->push_back(bubbleSwaps);
-	counters->push_back(adapBubbleComps);
-	counters->push_back(adapBubbleSwaps);
-	counters->push_back(selectionComps);
-	counters->push_back(bubbleComps);
-	counters->push_back(selectionSwaps);
-	counters->push_back(sequencialComps);
-	counters->push_back(orderedSequencialComps);
-	counters->push_back(adapSequence1Comps);
-	counters->push_back(adapSequence2Comps);
-	//project 2
-	counters->push_back(merge_sort_Comps);
-	counters->push_back(adap_merge_sort_Comps);
-	counters->push_back(adap20_merge_sort_Comps);
-	counters->push_back(heap_sort_Comps);
-	counters->push_back(heap_sort_Swaps);
-	return counters;
-} 
+void project_2() {
+	int runs = 5;
+	for (int i = 0; i<runs; i++) {
+		vector < pair<int*, int> > * samples = initSamples(project2getSampleSizes(), project2getSampleTypes());
+
+		performSort(heap_sort, samples);
+
+		//performSort(merge_sort, samples);
+
+		deallocSamples(samples);
+	}
+	printCountersToCSV(project_2_filename, project2CounterVector(), project2getSampleSizes(), project2getSampleTypes(), true);
+	printTimersToCSV(project_2_filename, project2TimerVector(), project2getSampleSizes(), project2getSampleTypes(), false);
+}

@@ -33,4 +33,8 @@ int 	adap_sequencial_search1		(pair<int*, int> p, int);	// function perform apap
 int 	adap_sequencial_search2		(int ary [], int, int);		// function perform apaptive sequencial search 2.
 int 	adap_sequencial_search2		(pair<int*, int>, int);		// function perform apaptive sequencial search 2.
 
+vector<int> project1getSampleSizes();
+vector<SAMPLETYPE> project1getSampleTypes();
+vector<counter> * project1CounterVector();
+
 #endif
