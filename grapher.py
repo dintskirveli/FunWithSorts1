@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import csv
 import sys
+import os.path
 
 indexToNameMap = {};
 def processHeader(row) :
@@ -36,6 +37,8 @@ for file in files:
 	title = ""
 	processedHeader = False
 	schemaSize = 0;
+	if not os.path.isfile(file) :
+		continue;
 	with open(file, 'rb') as csvfile:
 		reader = csv.reader(csvfile)
 		for row in reader:
