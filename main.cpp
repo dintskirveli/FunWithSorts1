@@ -10,10 +10,10 @@ char project_1_filename[] = "project_1.csv";
 char project_2_filename[] = "project_2.csv";
 
 int main() {
-	testSort(shellSort, 100);
+	//testSort(shellSort, 100);
 
-	//project_1();
-	//project_2();
+	project_1();
+	project_2();
 }
 
 void project_1() {
@@ -29,12 +29,12 @@ void project_1() {
 }
 
 void project_2() {
-	int runs = 5;
+	int runs = 10;
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project2getSampleSizes(), project2getSampleTypes());
 
-		//performSort(heap_sort, samples);
-		performSort(quickSort, samples);
+		performSort(heap_sort, samples);
+		//performSort(quickSort, samples);
 		//performSort(merge_sort, samples);
 
 		deallocSamples(samples);

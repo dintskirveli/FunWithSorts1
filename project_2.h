@@ -39,8 +39,11 @@ void quickToInsertSort(pair<int*, int> p);
 void quickToInsertSort( int *a, int first, int last );
 
 void quickMedianOfThreeSort( int *a, int first, int last );
+void quickMedianOfThreeSort( pair<int*, int> p );
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last );
+void quickMedianOfThreeToInsertionSort( pair<int*, int> p );
 void shellSort(int * a, int size);
+void shellSort(pair<int*, int> p);
 
 vector<int> project2getSampleSizes();
 vector<SAMPLETYPE> project2getSampleTypes();

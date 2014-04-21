@@ -342,8 +342,14 @@ void quickToInsertSort( int *a, int first, int last ) {
         quickToInsertSort(a, pivotElement+1, last);
     }
 }
+
+//TODO: make random, not just first/last/middle
 int medianOfThree(int * a, int first, int last) {
     return max(min(a[first],a[last]), min(max(a[first],a[last]),a[(first + last)/2]));
+}
+
+void quickMedianOfThreeSort( pair<int*, int> p ) {
+	quickMedianOfThreeSort(p.first, 0, p.second-1);
 }
 
 void quickMedianOfThreeSort( int *a, int first, int last ) {
@@ -353,6 +359,9 @@ void quickMedianOfThreeSort( int *a, int first, int last ) {
         quickMedianOfThreeSort(a, first, pivotElement-1);
         quickMedianOfThreeSort(a, pivotElement+1, last);
     }
+}
+void quickMedianOfThreeToInsertionSort( pair<int*, int> p ) {
+	quickMedianOfThreeToInsertionSort(p.first, 0, p.second-1);
 }
 
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
@@ -364,6 +373,10 @@ void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
         quickMedianOfThreeToInsertionSort(a, first, pivotElement-1);
         quickMedianOfThreeToInsertionSort(a, pivotElement+1, last);
     }
+}
+
+void shellSort(pair<int*, int> p) {
+	shellSort(p.first, p.second);
 }
 
 void shellSort(int * a, int size) {

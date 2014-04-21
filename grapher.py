@@ -42,8 +42,6 @@ for file in files:
 			if not processedHeader :
 				row = row[1:-1]
 				schemaSize = processHeader(row)
-				print schemaSize
-				print indexToNameMap
 				processedHeader = True
 				continue
 
