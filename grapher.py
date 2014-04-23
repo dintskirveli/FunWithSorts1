@@ -75,16 +75,19 @@ for file in files:
 			plt.bar(range(schemaSize), [sum(s)/len(s) for s in [seriesy[i] for i in range(schemaSize)]] )
 			plt.xticks(range(schemaSize), [i2str(i) for i in range(schemaSize)], rotation = 45, ha='right')
 		else :
+			averages = []
 			for i in range(schemaSize):
 				l = i2str(i)
-				print seriesy[i], average," ", l
-				averages.append(average)
+				average = sum(seriesy[i])/len(seriesy[i]) 
+				#print seriesy[i], average," ", l
+				#averages.append(average)
+				print average
 				plt.plot(seriesy[i], label=l)
 			#plt.
 
 		#
 		plt.title(key)
-		plt.legend(loc="upper left")
+		plt.legend(loc="lower right")
 		plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
 
 

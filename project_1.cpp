@@ -1,4 +1,5 @@
 #include "project_1.h"
+#include <list>
 
 counter bubbleComps("bubble comparisons");
 counter bubbleSwaps("bubble exchanges");
@@ -15,17 +16,17 @@ counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 vector<int> project1getSampleSizes() {
 	vector<int> project_1_sizes;
 	project_1_sizes.push_back(500);
-	project_1_sizes.push_back(2500);
-	project_1_sizes.push_back(12500);
-	project_1_sizes.push_back(62500);
+	//project_1_sizes.push_back(2500);
+	//project_1_sizes.push_back(12500);
+	//project_1_sizes.push_back(62500);
 	return project_1_sizes;
 }
 
 vector<SAMPLETYPE> project1getSampleTypes() {
 	vector<SAMPLETYPE> project_1_sample_types;
 	project_1_sample_types.push_back(RANDOM);
-	project_1_sample_types.push_back(REVERSE);
-	project_1_sample_types.push_back(TWENTY_PERCENT);
+	//project_1_sample_types.push_back(REVERSE);
+	//project_1_sample_types.push_back(TWENTY_PERCENT);
 	return project_1_sample_types;
 }
 
@@ -170,16 +171,39 @@ int adap_sequencial_search1(pair<int*, int>p, int key) {
 }
 
 int adap_sequencial_search1(int ary [], int size, int key) {
+
+	adapSequence1Comps.next();
+	std::list<int> mylist;
+	for (int i = 0; i < size; i++) {
+		mylist.push_back(ary[i]);
+	}
+
+	int i = 0;
+	for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it) {
+    	adapSequence1Comps.increment();
+    	i++;
+    	if (*it == key) {
+    		mylist.push_front(*it);
+    		mylist.erase(it);
+    		return i;
+    	}
+	}
+
+	/*
 	adapSequence1Comps.next();
 	for (int i = 0; i < size; i++) {
 		adapSequence1Comps.increment();
 		if (ary[i] == key) {
-			swap (ary[i], ary[0]);
+			if (i != 0) swap (ary[i], ary[0]);
 			return i;
 		}
 	}
+	*/
+
 	return -1;
 }
+
+
 
 int adap_sequencial_search2(pair<int*, int>p, int key) {
 	return adap_sequencial_search2(p.first, p.second, key);
@@ -190,7 +214,7 @@ int adap_sequencial_search2(int ary [], int size, int key) {
 	for (int i = 0; i < size; i++) {
 		adapSequence2Comps.increment();
 		if (ary[i] == key) {
-			swap(ary[i-1], ary[i]);
+			if (i != 0) swap(ary[i-1], ary[i]);
 			return i;
 		}
 	}

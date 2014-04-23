@@ -38,6 +38,6 @@ void createFiftyPercentArray(int *a, int size);
 void createRandArray(int *a, int size);
 void createReverseArray(int *a, int size);
 bool isSorted(int *a, int size);
-
-
+int randrand(int n);
+int * createElementArray(int * elements, int n);
 #endif

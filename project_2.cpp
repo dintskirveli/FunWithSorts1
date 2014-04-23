@@ -360,6 +360,7 @@ void quickMedianOfThreeSort( int *a, int first, int last ) {
         quickMedianOfThreeSort(a, pivotElement+1, last);
     }
 }
+
 void quickMedianOfThreeToInsertionSort( pair<int*, int> p ) {
 	quickMedianOfThreeToInsertionSort(p.first, 0, p.second-1);
 }
