@@ -141,6 +141,7 @@ void performSearch(int f(list<int> &, int), vector< pair<int*, int> > *samples) 
 		int * toSearch = createElementArray(p.first, p.second);
 		list<int> l = arrayToList(p.first, p.second);
 		for (int i = 0; i < p.second*5; i++) {
+			srand(clock());
 			int ret = f(l, toSearch[ rand() % p.second]);
 			if  (ret == -1) cout << "NOT FOUND 1\n";
 		}
