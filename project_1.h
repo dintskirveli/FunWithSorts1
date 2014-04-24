@@ -28,10 +28,12 @@ int		sequencial_search			(int ary [], int, int);		// function perform Sequencial
 int		sequencial_search			(pair<int*, int>, int);		// function perform Sequencial Search.
 int		ordered_sequencial_search	(int ary [], int, int);		// function perform ordered Sequencial Search.
 int		ordered_sequencial_search	(pair<int*, int>, int);		// function perform ordered Sequencial Search.
-int 	adap_sequencial_search1		(int *ary, int size, int);	// function perform apaptive sequencial search 1.
-int 	adap_sequencial_search1		(pair<int*, int> p, int);	// function perform apaptive sequencial search 1.
+//int 	adap_sequencial_search1		(int *ary, int size, int);	// function perform apaptive sequencial search 1.
+//int 	adap_sequencial_search1		(pair<int*, int> p, int);	// function perform apaptive sequencial search 1.
 int 	adap_sequencial_search2		(int ary [], int, int);		// function perform apaptive sequencial search 2.
 int 	adap_sequencial_search2		(pair<int*, int>, int);		// function perform apaptive sequencial search 2.
+
+int adap_sequencial_search1_list(list<int> & a, int key);
 
 vector<int> project1getSampleSizes();
 vector<SAMPLETYPE> project1getSampleTypes();

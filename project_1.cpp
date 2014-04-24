@@ -1,5 +1,4 @@
 #include "project_1.h"
-#include <list>
 
 counter bubbleComps("bubble comparisons");
 counter bubbleSwaps("bubble exchanges");
@@ -165,45 +164,25 @@ int ordered_sequencial_search(int ary [], int size, int key) {
 	}
 	return -1;
 }
-
+/*
 int adap_sequencial_search1(pair<int*, int>p, int key) {
 	return adap_sequencial_search1(p.first, p.second, key);
-}
+}*/
 
-int adap_sequencial_search1(int ary [], int size, int key) {
-
+int adap_sequencial_search1_list(list<int> & a, int key) {
 	adapSequence1Comps.next();
-	std::list<int> mylist;
-	for (int i = 0; i < size; i++) {
-		mylist.push_back(ary[i]);
-	}
-
 	int i = 0;
-	for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it) {
+	for (list<int>::iterator it=a.begin(); it != a.end(); ++it) {
     	adapSequence1Comps.increment();
     	i++;
     	if (*it == key) {
-    		mylist.push_front(*it);
-    		mylist.erase(it);
+    		a.push_front(*it);
+    		a.erase(it);
     		return i;
     	}
 	}
-
-	/*
-	adapSequence1Comps.next();
-	for (int i = 0; i < size; i++) {
-		adapSequence1Comps.increment();
-		if (ary[i] == key) {
-			if (i != 0) swap (ary[i], ary[0]);
-			return i;
-		}
-	}
-	*/
-
 	return -1;
 }
-
-
 
 int adap_sequencial_search2(pair<int*, int>p, int key) {
 	return adap_sequencial_search2(p.first, p.second, key);

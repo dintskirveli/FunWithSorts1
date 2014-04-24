@@ -13,6 +13,7 @@ using namespace std;
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <list>
 
 #include "counter.h"
 #include "timer.h"
@@ -28,9 +29,11 @@ vector< pair<int*, int> > * copySamples(vector< pair<int*, int> > * p);
 void deallocSamples(vector< pair<int*, int> > * victim);
 void performSort(void f(pair<int*, int>), vector< pair<int*, int> > * samples);
 void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > * samples);
+void performSearch(int f(list<int> &, int), vector< pair<int*, int> > *samples);
 
 void printArray(pair<int*, int> p);
 void printArray(int ary[], int size);
+void printList(list<int> l);
 void printSamples (vector< pair<int*, int> > * s);
 
 void createTwentyPercentArray(int *a, int size);
@@ -38,6 +41,8 @@ void createFiftyPercentArray(int *a, int size);
 void createRandArray(int *a, int size);
 void createReverseArray(int *a, int size);
 bool isSorted(int *a, int size);
-int randrand(int n);
+int leftbiasIndex(int n);
+int rightbiasIndex(int n);
 int * createElementArray(int * elements, int n);
+list<int> arrayToList(int * a, int size);
 #endif

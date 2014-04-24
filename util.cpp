@@ -99,15 +99,20 @@ void printTimersToCSV(char * filename, vector<timer> * timers, vector<int> sizes
   	myfile.close();
 }
 
-int randrand(int n) {
+int leftbiasIndex(int n) {
     srand(clock()*time(NULL));
-	return (int)( ((float)rand()/RAND_MAX) * ((float)rand()/RAND_MAX) * n );
+	return (int)(((float)rand()/RAND_MAX) * ((float)rand()/RAND_MAX) * n );
+}
+
+int rightbiasIndex(int n) {
+	srand(clock()*time(NULL));
+	return (int)((1 - ((float)rand()/RAND_MAX) * ((float)rand()/RAND_MAX)) * n);
 }
 
 int * createElementArray(int * elements, int n) {
 	int * toSearch = (int *) malloc(n * sizeof(int));
 	for (int i = 0; i < n; i++) {
-		toSearch[i] = elements[randrand(n)];
+		toSearch[i] = elements[rightbiasIndex(n)];
 	}
 	return toSearch;
 }
@@ -117,20 +122,29 @@ void performSearch(int f(pair<int*, int>, int), vector< pair<int*, int> > *sampl
 	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
         pair<int *, int> p = *it;
         cout<<"searching size: "<< p.second<<"\n";
-        int * toSearch = createElementArray(p.first, p.second);
-        for (int i = 0; i < p.second * 10; i++) {
-            //int keyIndex = randrand(p.second);
-            //f(p, toSearch[rand() % p.second]);
+        int * toSearch = createElementArray(p.first, p.second);      
+        for (int i = 0; i < p.second*5; i++) {
             srand(clock());
-            int ret = f(p, toSearch[ randrand(p.second) /*rand() % p.second*/]);
-            if  (ret == -1) {
-            	cout << "index: "<< i % p.second << "\n";
-            	cout << toSearch[i % p.second] << "\n";
-            	cout << "NOT FOUND 2\n";
-            }
+            int ret = f(p, toSearch[ rand() % p.second]);
+            if  (ret == -1) cout << "NOT FOUND 1\n";
         }
 	}
 	
+	deallocSamples(victim);
+}
+
+void performSearch(int f(list<int> &, int), vector< pair<int*, int> > *samples) {
+	vector< pair<int*, int> > *victim = copySamples(samples); 
+	for (vector<pair<int*,int> >::iterator it = victim->begin() ; it != victim->end(); ++it) {
+		pair<int *, int> p = *it;
+		cout<<"searching size: "<< p.second<<"\n";
+		int * toSearch = createElementArray(p.first, p.second);
+		list<int> l = arrayToList(p.first, p.second);
+		for (int i = 0; i < p.second*5; i++) {
+			int ret = f(l, toSearch[ rand() % p.second]);
+			if  (ret == -1) cout << "NOT FOUND 1\n";
+		}
+	}
 	deallocSamples(victim);
 }
 
@@ -260,6 +274,13 @@ void printArray(int ary[], int size) {
 	cout << "\n";
 }
 
+void printList(list<int> l) {
+	for (list<int>::iterator it=l.begin(); it != l.end(); ++it) {
+		cout << *it << ", ";
+	}
+	cout << "\n";
+}
+
 void printSamples (vector< pair<int*, int> > * s) {
 	for (vector< pair<int*, int> >::iterator it = s->begin() ; it != s->end(); ++it) {
 		pair <int*, int> p = *it;
@@ -274,4 +295,12 @@ bool isSorted(int *a, int size) {
 		}
 	}
 	return true;
+}
+
+list<int> arrayToList(int * a, int size) {
+	list<int> mylist;
+	for (int i = 0; i < size; i++) {
+		mylist.push_back(a[i]);
+	}
+	return mylist;
 }
