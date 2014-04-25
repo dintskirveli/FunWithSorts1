@@ -15,6 +15,8 @@ extern timer adap20SortTime;
 extern timer heapSortTime;
 extern timer quickSort1Time;
 extern timer quickToInsertSortTime;
+extern timer quickMedianOfThreeSortTime;
+extern timer quickMedianOfThreeToInsertionSortTime;
 
 void	build_maxHeap				(int ary[], int size);
 void	max_heapify					(int ary[], int i, int size);

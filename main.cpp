@@ -11,8 +11,8 @@ char project_1_filename[] = "project_1.csv";
 char project_2_filename[] = "project_2.csv";
 
 int main() {
-
-	project_1();
+	//project_1();
+	project_2();
 
 }
 
@@ -21,8 +21,13 @@ void project_1() {
 	int range = 1000000; //range of random numers, one million
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project1getSampleSizes(), project1getSampleTypes());
-        performSearch(adap_sequencial_search1_list, samples);
+        //performSearch(adap_sequencial_search1_list, samples);
         //performSearch(adap_sequencial_search2, samples);
+        /*performSort(bubble_sort ,samples);
+        performSort(adap_bubble_sort ,samples);
+        performSort(insertion_sort ,samples);*/
+        performSort(selection_sort ,samples);
+
  		
 		deallocSamples(samples);
 	}
@@ -30,14 +35,15 @@ void project_1() {
 }
 
 void project_2() {
-	int runs = 50;
+	int runs = 5;
 	int range = 10000000; //range of random numers, ten million
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project2getSampleSizes(), project2getSampleTypes());
 
 		performSort(heap_sort, samples);
-		//performSort(quickSort, samples);
-		//performSort(merge_sort, samples);
+		performSort(quickSort, samples);
+		performSort(quickToInsertSort, samples);
+		performSort(merge_sort, samples);
 
 		deallocSamples(samples);
 	}

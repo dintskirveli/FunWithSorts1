@@ -1,1 +1,1 @@
-make clean searchesandsorts && ./searchesandsorts && python grapher.py 800 600 && open *.png
+make clean searchesandsorts && ./searchesandsorts && python grapher.py 1600 1200 && open *.png

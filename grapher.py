@@ -27,6 +27,14 @@ def isBarGraph(counterName) :
 	else :
 		return True
 
+def printStats(key, series) :
+
+	for tup in enumerate(series):
+		s = sum(tup[1])
+		print key +"("+ i2str(tup[0]) +"): "
+		print "\tsum: "+ str(s)
+		print "\tavg: "+ str(s/len(tup[1]))
+
 width = int(sys.argv[1])
 height = int(sys.argv[2])
 
@@ -64,20 +72,19 @@ for file in files:
 
 	for key in seriesDict:
 		print key
-		
 		seriesy = seriesDict[key]
+		
+		fig = plt.figure()
+		dpi = fig.dpi 
+		fig.set_size_inches(width / dpi, height / dpi) 
+		plt.ylabel("Counter value")
+		plt.xlabel("Counter run#")
+
+		printStats(key, seriesy)
+
 		if isBarGraph(key):
-			
-			fig = plt.figure()
-			dpi = fig.dpi 
-			fig.set_size_inches(width / dpi, height / dpi) 
-			plt.ylabel("Counter value")
-			plt.xlabel("Counter run #")
 			plt.bar(range(schemaSize), [sum(s)/len(s) for s in [seriesy[i] for i in range(schemaSize)]] )
 			plt.xticks(range(schemaSize), [i2str(i) for i in range(schemaSize)], rotation = 45, ha='right')
-			plt.title(key)
-			plt.legend(loc="lower right")
-			plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
 		else :
 			averages = []
 			for i in range(schemaSize):
@@ -86,18 +93,13 @@ for file in files:
 				#print seriesy[i], average," ", l
 				#averages.append(average)
 				print average
-				seriesy = seriesDict[key]
-				fig = plt.figure()
-				dpi = fig.dpi 
-				fig.set_size_inches(width / dpi, height / dpi) 
-				plt.ylabel("Counter value")
-				plt.xlabel("Counter run #")
 				plt.plot(seriesy[i], label=l)
-				plt.title(key)
-				plt.legend(loc="lower right")
-				plt.savefig(key.replace(" ", "_"), bbox_inches='tight')
+			#plt.
 
 		#
+		plt.title(key)
+		plt.legend(loc="lower right")
+		plt.savefig(key.replace(" ", "_").replace(".",""), bbox_inches='tight')
 		
 
 

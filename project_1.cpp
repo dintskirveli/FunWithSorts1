@@ -15,17 +15,17 @@ counter adapSequence2Comps("adap_sequencial_search2 comparisons");
 vector<int> project1getSampleSizes() {
 	vector<int> project_1_sizes;
 	project_1_sizes.push_back(500);
-	//project_1_sizes.push_back(2500);
-	//project_1_sizes.push_back(12500);
-	//project_1_sizes.push_back(62500);
+	project_1_sizes.push_back(2500);
+	project_1_sizes.push_back(12500);
+	project_1_sizes.push_back(62500);
 	return project_1_sizes;
 }
 
 vector<SAMPLETYPE> project1getSampleTypes() {
 	vector<SAMPLETYPE> project_1_sample_types;
 	project_1_sample_types.push_back(RANDOM);
-	//project_1_sample_types.push_back(REVERSE);
-	//project_1_sample_types.push_back(TWENTY_PERCENT);
+	project_1_sample_types.push_back(REVERSE);
+	project_1_sample_types.push_back(TWENTY_PERCENT);
 	return project_1_sample_types;
 }
 

@@ -304,7 +304,6 @@ int partition(int* a, int p, int r, int value)
     return r;
 }
 
-
 void quickSort( int *a, int first, int last ) {
     if(first < last) {
         int pivotElement = partition(a, first, last, -1);
@@ -349,6 +348,7 @@ int medianOfThree(int * a, int first, int last) {
 }
 
 void quickMedianOfThreeSort( pair<int*, int> p ) {
+
 	quickMedianOfThreeSort(p.first, 0, p.second-1);
 }
 

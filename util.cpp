@@ -37,8 +37,13 @@ void printCountersToCSV(char * filename, vector<counter> * counters, vector<int>
 	for (vector< counter>::iterator it = counters->begin() ; it != counters->end(); ++it) {
 		counter cur = *it;
 		int numTrials = cur.size()/oneTrial;
+		cout << "numTrials: "<<numTrials<<"\n";
+		cout << "curSize: "<<cur.size()<<"\n";
+		cout << "oneTrial: "<<oneTrial<<"\n";
+
 		for (int i = 0; i < numTrials;i++ ) {
 			myfile << cur.desc()<<",";
+
 			for (int j = 0; j < oneTrial; j ++) {
 				myfile <<cur.at(j+oneTrial*i) <<",";
 			}
@@ -89,6 +94,7 @@ void printTimersToCSV(char * filename, vector<timer> * timers, vector<int> sizes
 		for (int i = 0; i < numTrials;i++ ) {
 			myfile << cur.desc()<<",";
 			for (int j = 0; j < oneTrial; j ++) {
+				//i+numTrials*j
 				myfile <<cur.at(j+oneTrial*i) <<",";
 			}
 			myfile<<"\n";
