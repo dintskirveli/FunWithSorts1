@@ -35,15 +35,24 @@ void 	adap20_merge_sort			(pair<int*, int>);			// function performs merge_sort
 void 	adap20_merge 				(int ary[], int size, int low, int middle, int high);
 void  	merge20_to_insertion		(int ary [], int size);		// function performs Insertion Sort.
 void 	quickSort 					( int *a, int first, int last );
-void quickSort(pair<int*, int> p);
+
 int partition(int *a, int first, int last, int value);
+void quickSort(pair<int*, int> p);
+
+void insertion_sort(int ary [], int first, int last);
+int partition2(int* a, int p, int r, int value);
 void quickToInsertSort(pair<int*, int> p);
 void quickToInsertSort( int *a, int first, int last );
 
+int partition3(int* a, int p, int r, int value);
 void quickMedianOfThreeSort( int *a, int first, int last );
 void quickMedianOfThreeSort( pair<int*, int> p );
+
+void insertion_sort2(int ary [], int first, int last);
+int partition4(int* a, int p, int r, int value);
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last );
 void quickMedianOfThreeToInsertionSort( pair<int*, int> p );
+
 void shellSort(int * a, int size);
 void shellSort(pair<int*, int> p);
 

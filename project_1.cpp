@@ -37,8 +37,9 @@ vector<counter> * project1CounterVector() {
 	counters->push_back(adapBubbleComps);
 	counters->push_back(adapBubbleSwaps);
 	counters->push_back(selectionComps);
-	counters->push_back(bubbleComps);
 	counters->push_back(selectionSwaps);
+	counters->push_back(insertionComps);
+	
 	counters->push_back(sequencialComps);
 	counters->push_back(orderedSequencialComps);
 	counters->push_back(adapSequence1Comps);
@@ -101,7 +102,6 @@ void insertion_sort(pair<int *, int> p) {
 
 void insertion_sort(int ary [], int size) {
 	insertionComps.next();
-	
 	int i, j, key;
 	for (i = 1; i < size; i++) {
 		key = ary[i];
