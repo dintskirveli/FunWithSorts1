@@ -13,14 +13,17 @@ counter quickMedianOfThreeSort_Comps("quickMedianOfThreeSort comparisons");
 counter quickMedianOfThreeSort_Swaps("quickMedianOfThreeSort exchanges");
 counter quickMedianOfThreeToInsertionSort_Comps("quickMedianOfThreeToInsertionSort comparisons");
 counter quickMedianOfThreeToInsertionSort_Swaps("quickMedianOfThreeToInsertionSort exchanges");
-counter shellSort_Comps("shellSort comparisons");
-counter shellSort_Swaps("shellSort exchanges");
+counter shellSort1_Comps("shellSort1 comparisons");
+counter shellSort1_Swaps("shellSort1 exchanges");
+counter shellSort2_Comps("shellSort2 comparisons");
+counter shellSort2_Swaps("shellSort2 exchanges");
 
 timer mergeSortTime("merge sort time");
-timer adapMergeSortTime("adap merge sort time");
-timer adap20SortTime("adap20 sort time");
+timer adapMergeSortTime("adap_merge_sort time");
+timer adap20SortTime("adap20_sort_time");
 timer heapSortTime("heap sort time");
-timer shellSortTimer("shellSort time");
+timer shellSort1Timer("shellSort1 time");
+timer shellSort2Timer("shellSort2 time");
 timer quickSort1Time("vanilla quicksort time");
 timer quickToInsertSortTime("quick to insertion sort time");
 timer quickMedianOfThreeSortTime("quick median of three sort time");
@@ -62,8 +65,10 @@ vector<counter> * project2CounterVector() {
 	counters->push_back(quickMedianOfThreeToInsertionSort_Comps);
 	counters->push_back(quickMedianOfThreeToInsertionSort_Swaps);
 
-	counters->push_back(shellSort_Comps);
-	counters->push_back(shellSort_Swaps);
+	counters->push_back(shellSort1_Comps);
+	counters->push_back(shellSort1_Swaps);
+	counters->push_back(shellSort2_Comps);
+	counters->push_back(shellSort2_Swaps);
 
 	return counters;
 } 
@@ -77,6 +82,10 @@ vector<timer> * project2TimerVector() {
 	timers->push_back(heapSortTime);
 	timers->push_back(quickSort1Time);
 	timers->push_back(quickToInsertSortTime);
+	timers->push_back(quickMedianOfThreeSortTime);
+	timers->push_back(quickMedianOfThreeToInsertionSortTime);
+	timers->push_back(shellSort1Timer);
+	timers->push_back(shellSort2Timer);	
 	return timers;
 } 
 
@@ -132,7 +141,7 @@ void adap_merge_sort(pair<int*, int> p) {
 	adapMergeSortTime.next();
 	adapMergeSortTime.start();
 	adap_merge_sort(p.first, p.second, 0, p.second - 1);
-	adapMergeSortTime.start();
+	adapMergeSortTime.stop();
 }
 
 void adap_merge_sort(int ary [], int size, int low, int high) {
@@ -353,6 +362,7 @@ void quickToInsertSort(pair<int*, int> p) {
 	quickToInsertSortTime_Swaps.next();
 
 	quickToInsertSort( p.first, 0, p.second-1);
+	insertion_sort(p.first, 0, p.second-1);
 	
 	quickToInsertSortTime.stop();
 }
@@ -397,7 +407,7 @@ int partition2(int* a, int p, int r, int value)
 
 void quickToInsertSort( int *a, int first, int last ) {
  	if (last - first < 50) {
- 		insertion_sort(a, first, last);
+ 		return;
  	} else if(first < last) {
         int pivotElement = partition2(a, first, last, -1);
         quickToInsertSort(a, first, pivotElement-1);
@@ -501,13 +511,14 @@ void quickMedianOfThreeToInsertionSort( pair<int*, int> p ) {
 	quickMedianOfThreeToInsertionSortTime.start();
 	
 	quickMedianOfThreeToInsertionSort(p.first, 0, p.second-1);
+	insertion_sort2(p.first, 0, p.second-1);
 	
 	quickMedianOfThreeToInsertionSortTime.stop();
 }
 
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
     if (last - first < 50) {
- 		insertion_sort2(a, first, last);
+    	return;
  	} else if(first < last) {
     	int value = medianOfThree(a, first, last);
         int pivotElement = partition4(a, first, last, value);
@@ -516,26 +527,92 @@ void quickMedianOfThreeToInsertionSort( int *a, int first, int last ) {
     }
 }
 
-void shellSort(pair<int*, int> p) {
-	shellSortTimer.start();
-	shellSortTimer.next();
+void shellSort1(pair<int*, int> p) {
 
-	shellSort_Comps.next();
-	shellSort_Swaps.next();
+	shellSort1Timer.next();
+	shellSort1Timer.start();
 
-	shellSort(p.first, p.second);
-	shellSortTimer.stop();
+	shellSort1_Comps.next();
+	shellSort1_Swaps.next();
+
+	shellSort1(p.first, p.second);
+	shellSort1Timer.stop();
 }
 
-void shellSort(int * a, int size) {
-    int n = size;
-    for (int incr = n/2; incr > 0; incr /= 2) {
-        for (int i = incr; i < n; i++) {
-        	shellSort_Comps.increment();
-            for (int j=i-incr; j>=0 && a[j]>a[j+incr]; j-=incr) {
-                swap(a[j],a[j+incr]);
-                shellSort_Swaps.increment();
+pair <int*, int> genIncs1(int N) {
+	int size = log(N);
+	int * cur = (int*)malloc((size-1)*sizeof(int));
+	for (int i = 1; i < size; i++) {
+		cur[i-1] = 2*i -1;
+	}
+	return make_pair(cur, size-1);
+}
+
+void shellSort1(int * a, int n) {
+	pair<int *, int> inc = genIncs1(n);
+    int h, i, j;
+    for (int z = inc.second-1; z >= 0; z--) {
+    	h = inc.first[z];
+    	for (i = h; i < n; i++) {
+            for (j = i-h; j >= 0 && (a[j] > a[i]); j -= h) {
+            	shellSort1_Comps.increment();
+                a[j+h] = a[j];
+                shellSort1_Swaps.increment();
             }
+            a[j+h] = a[i];
+            shellSort1_Swaps.increment();
+        }
+    }
+}
+
+void shellSort2(pair<int*, int> p) {
+
+	shellSort2Timer.next();
+	shellSort2Timer.start();
+
+	shellSort2_Comps.next();
+	shellSort2_Swaps.next();
+
+	shellSort2(p.first, p.second);
+	shellSort2Timer.stop();
+}
+
+pair <int*, int> genIncs2(int N) {
+	int tmpSize = 16; //enough for 312,500
+	int * incs= (int *)malloc(tmpSize*sizeof(int));
+	int index = 1;
+	incs[0] = 1;
+	while (index < tmpSize) {
+		incs[index] = (3*incs[index-1]+1);
+		index++;
+	}
+	int numIncs = 0;
+	while(incs[numIncs+2] < N) {
+		numIncs++;
+	}
+	numIncs++;
+	int * realIncs = (int *)malloc(numIncs*sizeof(int));
+	for (int i = 0; i < numIncs; i++) {
+		realIncs[i] = incs[i];
+	}
+	free(incs);
+	return make_pair(realIncs, numIncs);
+
+}
+
+void shellSort2(int * a, int n) {
+	pair<int *, int> inc = genIncs2(n);
+    int h, i, j;
+    for (int z = inc.second-1; z >= 0; z--) {
+    	h = inc.first[z];
+    	for (i = h; i < n; i++) {
+            for (j = i-h; j >= 0 && (a[j] > a[i]); j -= h) {
+            	shellSort2_Comps.increment();
+            	a[j+h] = a[j];
+                shellSort2_Swaps.increment();
+            }
+            a[j+h] = a[i];
+            shellSort2_Swaps.increment();
         }
     }
 }

@@ -13,10 +13,21 @@ char project_2_filename[] = "project_2.csv";
 int main() {
 	//project_1();
 	project_2();
+	/*int size = 10;
+	int * a = (int *) malloc(size * sizeof(int));
+	createPercentSortedArray(50, a, size);*/
+	//printArray(a, size);
+	//testSort(shellSort1, 312500);
+	//testSort(shellSort2, 500);
+	//printArray(genIncs2(500));
+
+	//shellSort2_Comps.next();
+	//shellSort2_Swaps.next();
+	//testSort(shellSort2, 312500);
 }
 
 void project_1() {
-	int runs = 3;
+	int runs = 1;
 	int range = 1000000; //range of random numers, one million
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project1getSampleSizes(), project1getSampleTypes());
@@ -36,12 +47,12 @@ void project_1() {
 }
 
 void project_2() {
-	int runs = 5;
+	int runs = 1;
 	int range = 10000000; //range of random numers, ten million
 	for (int i = 0; i<runs; i++) {
 		vector < pair<int*, int> > * samples = initSamples(project2getSampleSizes(), project2getSampleTypes());
 		
-		performSort(merge_sort, samples);
+		/*performSort(merge_sort, samples);
 		performSort(adap_merge_sort, samples);		// 100 keys to insertion sort
 		performSort(adap20_merge_sort, samples);	// 20 keys to insertion sort
 		
@@ -51,8 +62,9 @@ void project_2() {
 		performSort(quickToInsertSort, samples);
 		performSort(quickMedianOfThreeSort, samples);
 		performSort(quickMedianOfThreeToInsertionSort,samples);
-
-		performSort(shellSort, samples);
+		*/
+		performSort(shellSort1, samples);
+		performSort(shellSort2, samples);
 
 		deallocSamples(samples);
 	}
@@ -68,6 +80,7 @@ void testSort(void f(int *, int), int size) {
 	createRandArray(a, size);
 	cout << "testing sort...\n";
 	f(a, size);
+	//printArray(a, size);
 	assert(isSorted(a, size));
 	cout << "passed.\n";
 }

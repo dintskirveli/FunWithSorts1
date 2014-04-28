@@ -5,6 +5,7 @@ counter bubbleSwaps("bubble exchanges");
 counter adapBubbleComps("adap. bubble sort comparisons");
 counter adapBubbleSwaps("adap. bubble sort exchanges");
 counter insertionComps("insertion sort comparisons");
+counter insertionSwaps("insertion sort exchanges");
 counter selectionComps("selection sort comparisons");
 counter selectionSwaps("selection sort exchanges");
 counter sequencialComps("sequencial search comparisons");
@@ -39,7 +40,7 @@ vector<counter> * project1CounterVector() {
 	counters->push_back(selectionComps);
 	counters->push_back(selectionSwaps);
 	counters->push_back(insertionComps);
-	
+	counters->push_back(insertionSwaps);
 	counters->push_back(sequencialComps);
 	counters->push_back(orderedSequencialComps);
 	counters->push_back(adapSequence1Comps);
@@ -57,15 +58,12 @@ void bubble_sort(int ary [], int size)
 {
 	bubbleComps.next();
 	bubbleSwaps.next();
-	int i, j, temp;
-	for (i = 1; i <= size; i++) {
-		for (j = 0; j < size - 1; j++) {
+	for (int i = 1; i <= size; i++) {
+		for (int j = 0; j < size - 1; j++) {
 			bubbleComps.increment();
 			if (ary[j] > ary[j+1]) {
 				bubbleSwaps.increment();
-				temp = ary[j];
-				ary[j] = ary[j+1];
-				ary[j+1] = temp;
+				swap(ary[j], ary[j+1]);
 			}
 		}
 	}
@@ -78,21 +76,19 @@ void adap_bubble_sort(pair<int *, int> p) {
 void adap_bubble_sort(int ary [], int size) {
 	adapBubbleComps.next();
 	adapBubbleSwaps.next();
-	
-	int i, j, temp;
-	bool flag = true;
-	for (i = 1; (i <= size) && flag; i++) {
-		flag = false;
-		for (j = 0; j < size - 1; j++) {
+
+	bool swapped;
+	for (int i = 1; i <= size; i++) {
+		swapped = false;
+		for (int j = 0; j < size - 1; j++) {
 			adapBubbleComps.increment();
 			if (ary[j] > ary[j+1]) {
 				adapBubbleSwaps.increment();
-				temp = ary[j];
-				ary[j] = ary[j+1];
-				ary[j+1] = temp;
-				flag = true;						
+				swap(ary[j], ary[j+1]);
+				swapped = true;						
 			}
 		}
+		if (!swapped) break;
 	}
 }
 
@@ -102,6 +98,7 @@ void insertion_sort(pair<int *, int> p) {
 
 void insertion_sort(int ary [], int size) {
 	insertionComps.next();
+	insertionSwaps.next();
 	int i, j, key;
 	for (i = 1; i < size; i++) {
 		key = ary[i];
@@ -109,8 +106,10 @@ void insertion_sort(int ary [], int size) {
 		while (j >= 0 && ary[j] > key) {
 			insertionComps.increment();
 			ary[j + 1] = ary[j];
+			insertionSwaps.increment();
 			j = j - 1;
 		}
+		insertionSwaps.increment();
 		ary[j + 1] = key;
 	}
 }

@@ -12,6 +12,7 @@ class counter {
 public :
 	counter(string desc);
 	void increment();
+	void increment(int amount);
 	void printCurrent();
 	void printAll();
 	uint64_t at(int index);

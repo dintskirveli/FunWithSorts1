@@ -14,6 +14,7 @@ using namespace std;
 #include <algorithm>
 #include <string>
 #include <list>
+#include <math.h>
 
 #include "counter.h"
 #include "timer.h"
@@ -36,6 +37,7 @@ void printArray(int ary[], int size);
 void printList(list<int> l);
 void printSamples (vector< pair<int*, int> > * s);
 
+void createPercentSortedArray(int percent, int * a, int size);
 void createTwentyPercentArray(int *a, int size);
 void createFiftyPercentArray(int *a, int size);
 void createRandArray(int *a, int size);

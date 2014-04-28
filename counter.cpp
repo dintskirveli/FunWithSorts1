@@ -10,6 +10,10 @@ void counter::increment() {
 	runs->at(index)++;
 }
 
+void counter::increment(int amount) {
+	runs->at(index)+= amount;
+}
+
 void counter::printCurrent() {
 	cout << description << ": " << runs->at(index) << "\n";
 }

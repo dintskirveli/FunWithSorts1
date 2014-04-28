@@ -3,20 +3,6 @@
 
 #include "util.h"
 
-extern counter merge_sort_Comps;
-extern counter adap_merge_sort_Comps;
-extern counter adap20_merge_sort_Comps;
-extern counter heap_sort_Comps;
-extern counter heap_sort_Swaps;
-
-extern timer mergeSortTime;
-extern timer adapMergeSortTime;
-extern timer adap20SortTime;
-extern timer heapSortTime;
-extern timer quickSort1Time;
-extern timer quickToInsertSortTime;
-extern timer quickMedianOfThreeSortTime;
-extern timer quickMedianOfThreeToInsertionSortTime;
 
 void	build_maxHeap				(int ary[], int size);
 void	max_heapify					(int ary[], int i, int size);
@@ -52,9 +38,13 @@ void insertion_sort2(int ary [], int first, int last);
 int partition4(int* a, int p, int r, int value);
 void quickMedianOfThreeToInsertionSort( int *a, int first, int last );
 void quickMedianOfThreeToInsertionSort( pair<int*, int> p );
+pair <int*, int> genIncs1(int N);
+pair <int*, int> genIncs2(int N);
+void shellSort1(int * a, int size);
+void shellSort1(pair<int*, int> p);
 
-void shellSort(int * a, int size);
-void shellSort(pair<int*, int> p);
+void shellSort2(int * a, int size);
+void shellSort2(pair<int*, int> p);
 
 vector<int> project2getSampleSizes();
 vector<SAMPLETYPE> project2getSampleTypes();

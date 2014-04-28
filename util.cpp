@@ -166,6 +166,7 @@ void performSort(void f(pair<int*, int>), vector< pair<int*, int> > *samples) {
 }
 
 void createRandArray(int *a, int size) {
+	srand(clock());
 	for (int i = 0; i < size; i++) {
 		a[i] = rand() % 1000000;
 	}
@@ -178,41 +179,27 @@ void createReverseArray(int *a, int size) {
 }
 
 void createTwentyPercentArray(int *a, int size) {
-	int sorted = size/5;
+	createPercentSortedArray(20, a, size);
+}
 
-	for (int i = 0; i < size; i++) {
-		a[i] = rand() % 1000000; 
+void createPercentSortedArray(int percent, int * a, int size) {
+	int sorted = (float)percent*size/100;
+	int * indexes = (int *)malloc(sorted*sizeof(int));
+	createRandArray(a, size);
+	vector<int> toSort;
+	for (int i = 0; i < sorted; i++) {
+		srand(clock());
+		indexes[i] = rand() % size;
+		toSort.push_back(a[indexes[i]]);
 	}
-
-	vector<int> used;
-	for (int i = 0; i < sorted; i ++) {
-		used.push_back(rand() % size);
-	}
-
-	sort(used.begin(), used.end());
-	int count = 0;
-	for (vector<int>::iterator it=used.begin(); it!=used.end(); ++it) {
-		a[((int)*it)] = count++;
+	sort(toSort.begin(), toSort.end());
+	for (int i = 0; i < sorted; i++) {
+		a[indexes[i]] = toSort.at(i);
 	}
 }
 
 void createFiftyPercentArray(int *a, int size) {
-	int sorted = size/2;
-
-	for (int i = 0; i < size; i++) {
-		a[i] = rand() % 1000000; 
-	}
-
-	vector<int> used;
-	for (int i = 0; i < sorted; i ++) {
-		used.push_back(rand() % size);
-	}
-
-	sort(used.begin(), used.end());
-	int count = 0;
-	for (vector<int>::iterator it=used.begin(); it!=used.end(); ++it) {
-		a[((int)*it)] = count++;
-	}
+	createPercentSortedArray(50, a, size);
 }
 
 
